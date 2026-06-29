@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>METARA – Regenerative Living Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --deep: #0a0e1a;
+    --cosmos: #0d1530;
+    --indigo: #1a2456;
+    --accent: #4fc3f7;
+    --gold: #c8a96e;
+    --glow: #7b6fd4;
+    --text: #e8e4d8;
+    --muted: #8a8a9a;
+    --border: rgba(200,169,110,0.2);
+    --radius: 2px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── STAR FIELD ── */
+  .stars {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(123,111,212,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(79,195,247,0.08) 0%, transparent 50%),
+      var(--deep);
+  }
+  .stars::before, .stars::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 20%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 85% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 90% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 90%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    background-size: 300px 300px;
+  }
+  .stars::after {
+    background-size: 200px 200px;
+    opacity: 0.5;
+    transform: rotate(30deg);
+  }
+
+  /* ── LAYOUT ── */
+  .wrap { position: relative; z-index: 1; }
+
+  section { padding: 6rem 1.5rem; max-width: 900px; margin: 0 auto; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem;
+    background: rgba(10,14,26,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--gold); text-decoration: none;
+  }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  nav ul a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 1.5rem 6rem;
+    position: relative; z-index: 1;
+  }
+  .hero-logo {
+    width: 180px; height: 180px; border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    box-shadow: 0 0 60px rgba(123,111,212,0.3);
+    margin-bottom: 2.5rem;
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--text); margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted); max-width: 580px;
+    margin: 0 auto 3rem; line-height: 1.8;
+  }
+  .btn {
+    display: inline-block; padding: 0.85rem 2.4rem;
+    border: 1px solid var(--gold); color: var(--gold);
+    text-decoration: none; font-size: 0.8rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    transition: all 0.3s; margin: 0.4rem;
+  }
+  .btn:hover { background: var(--gold); color: var(--deep); }
+  .btn-ghost { border-color: rgba(200,169,110,0.3); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex; align-items: center; gap: 1rem;
+    max-width: 900px; margin: 0 auto; padding: 0 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .divider span {
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); white-space: nowrap;
+  }
+
+  /* ── WHAT WE ARE ── */
+  .what-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+    font-weight: 300; line-height: 1.5; color: var(--text);
+    margin-bottom: 2rem;
+  }
+  .what-intro strong { font-weight: 600; color: var(--gold); }
+
+  /* ── PILLARS ── */
+  .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1px; margin-top: 4rem; background: var(--border); }
+  .pillar {
+    background: var(--cosmos); padding: 2rem 1.8rem;
+    transition: background 0.3s;
+  }
+  .pillar:hover { background: var(--indigo); }
+  .pillar-num {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--glow); margin-bottom: 0.8rem; display: block;
+  }
+  .pillar h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 400; color: var(--text);
+    margin-bottom: 0.8rem;
+  }
+  .pillar p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── VISION BLOCK ── */
+  .vision-block {
+    border-left: 2px solid var(--gold);
+    padding: 2rem 2.5rem; margin: 3rem 0;
+    background: rgba(200,169,110,0.04);
+  }
+  .vision-block p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    font-weight: 300; font-style: italic;
+    color: var(--text); line-height: 1.6;
+  }
+  .vision-block cite {
+    display: block; margin-top: 1rem;
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); font-style: normal;
+  }
+
+  /* ── VENTURES ── */
+  .ventures { list-style: none; }
+  .ventures li {
+    display: flex; align-items: baseline; gap: 1rem;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+  }
+  .ventures li:last-child { border-bottom: none; }
+  .venture-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0; margin-top: 0.4rem;
+  }
+  .ventures h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 400; color: var(--text);
+  }
+  .ventures p { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── HOW IT WORKS ── */
+  .cycle {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 2rem; margin-top: 3rem; text-align: center;
+  }
+  .cycle-step { position: relative; }
+  .cycle-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 1px solid var(--border); display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 1rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; color: var(--gold);
+    background: var(--cosmos);
+  }
+  .cycle-step h4 {
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text); margin-bottom: 0.4rem;
+  }
+  .cycle-step p { font-size: 0.82rem; color: var(--muted); }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.6rem; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 300; color: var(--text); margin-bottom: 1.5rem;
+  }
+  .section-body { color: var(--muted); max-width: 640px; line-height: 1.8; }
+
+  /* ── VALUES ── */
+  .values-grid {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin-top: 2.5rem;
+  }
+  .value-tag {
+    padding: 0.45rem 1rem; border: 1px solid var(--border);
+    font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em;
+    transition: all 0.3s;
+  }
+  .value-tag:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── CONTACT ── */
+  .contact-box {
+    background: var(--cosmos); border: 1px solid var(--border);
+    padding: 3.5rem 2.5rem; text-align: center;
+  }
+  .contact-box h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    font-weight: 300; margin-bottom: 1rem; color: var(--text);
+  }
+  .contact-box p { color: var(--muted); margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; margin-bottom: 2rem; }
+  .contact-detail {
+    font-size: 0.85rem; color: var(--muted); margin-top: 2rem;
+  }
+  .contact-detail a { color: var(--gold); text-decoration: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border); padding: 2rem 1.5rem;
+    text-align: center; position: relative; z-index: 1;
+    color: var(--muted); font-size: 0.78rem; letter-spacing: 0.08em;
+  }
+  footer .f-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; color: var(--gold); letter-spacing: 0.2em;
+    display: block; margin-bottom: 0.5rem;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    nav ul { display: none; }
+    section { padding: 4rem 1.2rem; }
+    .vision-block { padding: 1.5rem; }
+    .contact-box { padding: 2.5rem 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-logo { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<nav>
+  <a class="nav-logo" href="#hero">METARA</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#ventures">Ventures</a></li>
+    <li><a href="#circular">Circular Economy</a></li>
+    <li><a href="#connect">Connect</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <img class="hero-logo" src="data:image/jpeg;base64,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" alt="METARA – Galaxy Logo">
+    <p class="hero-eyebrow">Plettenberg Bay · South Africa</p>
+    <h1>Regenerative systems<br>for a <em>thriving world</em></h1>
+    <p class="hero-sub">METARA pioneers practical pathways toward regenerative living — connecting communities, circulating resources, and designing systems that produce more than they consume.</p>
+    <div>
+      <a class="btn" href="#connect">Start a conversation</a>
+      <a class="btn btn-ghost" href="#about">Explore the vision</a>
+    </div>
+  </div>
+
+  <!-- WHAT WE ARE -->
+  <section id="about">
+    <span class="section-label">Who we are</span>
+    <p class="what-intro">
+      METARA exists to help <strong>discover, design and implement</strong> the patterns that already sustain life — and apply them to how we build economies, communities and ecosystems.
+    </p>
+    <p class="section-body">
+      Life has demonstrated through billions of years of evolution that resilient systems emerge through cooperation, diversity, specialization, and interconnectedness. A healthy forest thrives not because every tree competes for the most resources — but because countless relationships continuously create more life than they consume. METARA is built on that same principle.
+    </p>
+
+    <div class="vision-block">
+      <p>"To cultivate a global network of thriving regenerative communities that demonstrate how humanity can flourish in partnership with nature."</p>
+      <cite>METARA Vision</cite>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar-num">Purpose</span>
+        <h3>Pioneer practical pathways</h3>
+        <p>METARA transforms systems thinking into real-world solutions that enable individuals, organisations and communities to become self-reliant, collaborative and regenerative.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">Mission</span>
+        <h3>Research. Design. Implement.</h3>
+        <p>We research, design, implement and continually improve interconnected living systems that strengthen ecological health, social wellbeing and long-term economic resilience.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">Approach</span>
+        <h3>Living systems thinking</h3>
+        <p>Every METARA project follows a continuous cycle — observe, design, implement, measure, reflect, learn, improve, and share. There is no final version, only continual refinement.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span>Core values</span></div>
+  <section style="padding-top: 3rem; padding-bottom: 3rem;">
+    <div class="values-grid">
+      <span class="value-tag">Regeneration over sustainability</span>
+      <span class="value-tag">Cooperation over competition</span>
+      <span class="value-tag">Localisation</span>
+      <span class="value-tag">Circular resource flows</span>
+      <span class="value-tag">Diversity for resilience</span>
+      <span class="value-tag">Integration over isolation</span>
+      <span class="value-tag">Transparency</span>
+      <span class="value-tag">Systems thinking</span>
+      <span class="value-tag">Community ownership</span>
+      <span class="value-tag">Ecological restoration</span>
+      <span class="value-tag">Continuous learning</span>
+      <span class="value-tag">Abundance over scarcity</span>
+    </div>
+  </section>
+
+  <!-- VENTURES -->
+  <div class="divider"><span>Current ventures</span></div>
+  <section id="ventures">
+    <span class="section-label">The ecosystem</span>
+    <h2 class="section-title">A living system of enterprises</h2>
+    <p class="section-body">Like a tree that remains the same organism while continuously producing new branches, METARA expands while remaining rooted in its original DNA. Each venture is an expression of the same principles.</p>
+
+    <ul class="ventures" style="margin-top: 2.5rem;">
+      <li>
+        <div class="venture-dot"></div>
+        <div>
+          <h4>METARA Living Solutions</h4>
+          <p>The commercial engine — financially sustainable businesses that solve real-world problems while generating the resources that power the wider ecosystem.</p>
+        </div>
+      </li>
+      <li>
+        <div class="venture-dot"></div>
+        <div>
+          <h4>METARA Collaboration &amp; Eco Solutions</h4>
+          <p>A local circular economy platform connecting independent businesses in Plettenberg Bay into a mutually beneficial network — turning waste into resource, reducing costs, and building community.</p>
+        </div>
+      </li>
+      <li>
+        <div class="venture-dot"></div>
+        <div>
+          <h4>METARA Cooperative</h4>
+          <p>The coordinating structure — a community-owned body that governs resource flows, issues Resource Credits for regenerative contributions, and distributes value across the ecosystem.</p>
+        </div>
+      </li>
+      <li>
+        <div class="venture-dot"></div>
+        <div>
+          <h4>METARA Holistic Retreat Centre</h4>
+          <p>A sanctuary for deep rest, healing and purpose — a self-sufficient community model rooted in regenerative abundance, nature connection, and holistic wellbeing.</p>
+        </div>
+      </li>
+      <li>
+        <div class="venture-dot"></div>
+        <div>
+          <h4>METARA Collective NPO</h4>
+          <p>The social layer — supporting education, ecological restoration, community projects, and care initiatives. The foundation that ensures value reaches communities and nature.</p>
+        </div>
+      </li>
+      <li>
+        <div class="venture-dot"></div>
+        <div>
+          <h4>METARA Unconditional Love School</h4>
+          <p>Education rooted in the deepest principles of human connection, cooperation, and conscious living. Established 2021.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- CIRCULAR ECONOMY -->
+  <div class="divider"><span>How it works</span></div>
+  <section id="circular">
+    <span class="section-label">Circular economy</span>
+    <h2 class="section-title">Waste is not worthless</h2>
+    <p class="section-body">
+      Waste is accumulated embodied energy, labour, materials, knowledge and ecological extraction that has become disconnected from a useful cycle. METARA exists to close those cycles — and reward the people who do it.
+    </p>
+
+    <div class="cycle">
+      <div class="cycle-step">
+        <div class="cycle-icon">↻</div>
+        <h4>Collect</h4>
+        <p>Resources are recovered from waste streams across the local economy</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-icon">◈</div>
+        <h4>Credit</h4>
+        <p>Members earn Resource Credits for every regenerative contribution</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-icon">⬡</div>
+        <h4>Produce</h4>
+        <p>The cooperative transforms materials into products, food, energy and services</p>
+      </div>
+      <div class="cycle-step">
+        <div class="cycle-icon">◎</div>
+        <h4>Circulate</h4>
+        <p>Credits flow locally, strengthening the bioregional economy with every cycle</p>
+      </div>
+    </div>
+
+    <div class="vision-block" style="margin-top: 3rem;">
+      <p>"A living economy where contribution to the commons becomes the foundation of prosperity."</p>
+      <cite>METARA Circular Economy</cite>
+    </div>
+
+    <p class="section-body" style="margin-top: 1.5rem;">
+      The first pilot is launching now in Plettenberg Bay — connecting a small cluster of local businesses into a food and soil loop: coffee waste to mushroom substrate, spent substrate to compost, compost to vegetables, vegetables back to the café. Simple. Proven. Ready to expand.
+    </p>
+  </section>
+
+  <!-- CONNECT -->
+  <div class="divider"><span>Get involved</span></div>
+  <section id="connect" style="padding-bottom: 8rem;">
+    <span class="section-label">Start the conversation</span>
+    <h2 class="section-title">Ready to be part of something<br>that actually <em style="font-style:italic; color:var(--gold)">regenerates</em>?</h2>
+    <p class="section-body" style="margin-bottom:3rem;">Tell us a little about yourself and what draws you to METARA. We'll read every response personally and reach out to explore how we might work together.</p>
+
+    <!-- ── INTELLIGENT FORM ── -->
+    <div id="metara-form-wrap">
+
+      <!-- PROGRESS -->
+      <div id="form-progress" style="margin-bottom:2rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+          <span id="progress-label" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);">Step 1 of 4</span>
+          <span id="progress-pct" style="font-size:0.72rem;color:var(--muted);">0%</span>
+        </div>
+        <div style="height:2px;background:rgba(200,169,110,0.15);border-radius:2px;overflow:hidden;">
+          <div id="progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.5s ease;"></div>
+        </div>
+      </div>
+
+      <!-- STEP PANELS -->
+      <div id="form-steps">
+
+        <!-- ── STEP 1: Who are you? ── -->
+        <div class="form-step active" data-step="1">
+          <div class="step-heading">Who are you?</div>
+          <div class="step-sub">A few basics so we know how to reach you.</div>
+
+          <div class="field-group">
+            <label class="field-label">Your name <span class="req">*</span></label>
+            <input class="f-input" type="text" id="f-name" placeholder="First name is fine">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Email address <span class="req">*</span></label>
+            <input class="f-input" type="email" id="f-email" placeholder="love@yourdomain.com">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Where are you based?</label>
+            <input class="f-input" type="text" id="f-location" placeholder="Town, region or country">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">What best describes you? <span class="req">*</span></label>
+            <div class="chip-group" id="f-who">
+              <div class="chip" data-val="individual">An individual</div>
+              <div class="chip" data-val="business">A local business</div>
+              <div class="chip" data-val="organisation">An organisation / NPO</div>
+              <div class="chip" data-val="practitioner">A healer / practitioner</div>
+              <div class="chip" data-val="creative">A creative / artist</div>
+              <div class="chip" data-val="investor">An investor / funder</div>
+            </div>
+          </div>
+
+          <button class="form-btn" onclick="nextStep(1)">Continue →</button>
+        </div>
+
+        <!-- ── STEP 2: What draws you? (adapts by who-type) ── -->
+        <div class="form-step" data-step="2">
+          <div class="step-heading" id="s2-heading">What draws you to METARA?</div>
+          <div class="step-sub" id="s2-sub">We'd love to understand your situation.</div>
+
+          <!-- INDIVIDUAL branch -->
+          <div class="branch" id="branch-individual" style="display:none;">
+            <div class="field-group">
+              <label class="field-label">What is calling you right now?</label>
+              <div class="chip-group" id="f-calling">
+                <div class="chip" data-val="purpose">Finding purpose or direction</div>
+                <div class="chip" data-val="community">Deeper community connection</div>
+                <div class="chip" data-val="healing">Rest, healing or retreat</div>
+                <div class="chip" data-val="skills">Learning regenerative skills</div>
+                <div class="chip" data-val="livelihood">Building a meaningful livelihood</div>
+                <div class="chip" data-val="contribute">Contributing my skills to something bigger</div>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">How would you describe your energy? (choose the closest)</label>
+              <div class="chip-group" id="f-element">
+                <div class="chip" data-val="fire">🔥 Fire — passionate, action-oriented, transformative</div>
+                <div class="chip" data-val="air">🌬️ Air — visionary, communicative, connector</div>
+                <div class="chip" data-val="water">🌊 Water — empathic, intuitive, depth-seeking</div>
+                <div class="chip" data-val="earth">🪨 Earth — grounded, practical, reliable</div>
+                <div class="chip" data-val="unsure">I'm not sure yet</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUSINESS branch -->
+          <div class="branch" id="branch-business" style="display:none;">
+            <div class="field-group">
+              <label class="field-label">What kind of business do you run?</label>
+              <input class="f-input" type="text" id="f-biz-type" placeholder="e.g. café, farm, artisan studio, health practice…">
+            </div>
+            <div class="field-group">
+              <label class="field-label">What's your biggest current challenge?</label>
+              <div class="chip-group" id="f-biz-challenge">
+                <div class="chip" data-val="waste">Waste I can't use or afford to remove</div>
+                <div class="chip" data-val="customers">Finding consistent customers</div>
+                <div class="chip" data-val="costs">High input or operational costs</div>
+                <div class="chip" data-val="isolation">Operating in isolation</div>
+                <div class="chip" data-val="marketing">Visibility and marketing</div>
+                <div class="chip" data-val="purpose">Aligning profit with purpose</div>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Approximate monthly revenue (helps us understand context)</label>
+              <div class="chip-group" id="f-biz-size">
+                <div class="chip" data-val="micro">Under R20k</div>
+                <div class="chip" data-val="small">R20k – R100k</div>
+                <div class="chip" data-val="medium">R100k – R500k</div>
+                <div class="chip" data-val="large">Over R500k</div>
+                <div class="chip" data-val="prefer-not">Prefer not to say</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ORGANISATION branch -->
+          <div class="branch" id="branch-organisation" style="display:none;">
+            <div class="field-group">
+              <label class="field-label">Name of your organisation</label>
+              <input class="f-input" type="text" id="f-org-name" placeholder="Organisation name">
+            </div>
+            <div class="field-group">
+              <label class="field-label">What is your primary focus area?</label>
+              <div class="chip-group" id="f-org-focus">
+                <div class="chip" data-val="ecology">Ecological restoration</div>
+                <div class="chip" data-val="community">Community development</div>
+                <div class="chip" data-val="education">Education</div>
+                <div class="chip" data-val="economy">Alternative economy</div>
+                <div class="chip" data-val="health">Health and wellbeing</div>
+                <div class="chip" data-val="culture">Arts and culture</div>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">How might you collaborate with METARA?</label>
+              <div class="chip-group" id="f-org-collab">
+                <div class="chip" data-val="partner">Project partnership</div>
+                <div class="chip" data-val="fund">Funding or grants</div>
+                <div class="chip" data-val="knowledge">Knowledge sharing</div>
+                <div class="chip" data-val="network">Network connection</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRACTITIONER branch -->
+          <div class="branch" id="branch-practitioner" style="display:none;">
+            <div class="field-group">
+              <label class="field-label">What healing or facilitation modalities do you work with?</label>
+              <input class="f-input" type="text" id="f-prac-modality" placeholder="e.g. yoga, somatic therapy, herbalism, sound healing…">
+            </div>
+            <div class="field-group">
+              <label class="field-label">What are you looking for?</label>
+              <div class="chip-group" id="f-prac-seeking">
+                <div class="chip" data-val="space">A space to offer sessions</div>
+                <div class="chip" data-val="community">A community to be part of</div>
+                <div class="chip" data-val="retreat">Co-creating retreat programmes</div>
+                <div class="chip" data-val="residency">A facilitator residency</div>
+                <div class="chip" data-val="collab">Collaboration with other practitioners</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CREATIVE branch -->
+          <div class="branch" id="branch-creative" style="display:none;">
+            <div class="field-group">
+              <label class="field-label">What is your creative practice?</label>
+              <input class="f-input" type="text" id="f-creative-type" placeholder="e.g. music, visual art, writing, ceramics…">
+            </div>
+            <div class="field-group">
+              <label class="field-label">How do you imagine contributing to METARA?</label>
+              <div class="chip-group" id="f-creative-contrib">
+                <div class="chip" data-val="events">Performing or exhibiting at events</div>
+                <div class="chip" data-val="workshops">Running creative workshops</div>
+                <div class="chip" data-val="identity">Contributing to METARA's visual identity</div>
+                <div class="chip" data-val="documentation">Documenting the community story</div>
+                <div class="chip" data-val="residency">An artist residency</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INVESTOR branch -->
+          <div class="branch" id="branch-investor" style="display:none;">
+            <div class="field-group">
+              <label class="field-label">What draws you to METARA's model?</label>
+              <div class="chip-group" id="f-inv-interest">
+                <div class="chip" data-val="circular">Circular economy innovation</div>
+                <div class="chip" data-val="community">Community development impact</div>
+                <div class="chip" data-val="cooperative">Cooperative governance model</div>
+                <div class="chip" data-val="retreat">Holistic retreat centre</div>
+                <div class="chip" data-val="all">The whole ecosystem</div>
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">What type of involvement are you considering?</label>
+              <div class="chip-group" id="f-inv-type">
+                <div class="chip" data-val="grant">Grant or donation</div>
+                <div class="chip" data-val="impact">Impact investment</div>
+                <div class="chip" data-val="inkind">In-kind resources</div>
+                <div class="chip" data-val="explore">Still exploring</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-top:2rem;">
+            <button class="form-btn-ghost" onclick="prevStep(2)">← Back</button>
+            <button class="form-btn" onclick="nextStep(2)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: Skills & Contribution ── -->
+        <div class="form-step" data-step="3">
+          <div class="step-heading">What you bring</div>
+          <div class="step-sub">METARA thrives on diverse contributions. What's yours?</div>
+
+          <div class="field-group">
+            <label class="field-label">Core skills or experience (select all that apply)</label>
+            <div class="chip-group multi" id="f-skills">
+              <div class="chip" data-val="building">Building / Carpentry</div>
+              <div class="chip" data-val="gardening">Gardening / Permaculture</div>
+              <div class="chip" data-val="cooking">Cooking / Food production</div>
+              <div class="chip" data-val="organizing">Organising / Coordinating</div>
+              <div class="chip" data-val="teaching">Teaching / Facilitating</div>
+              <div class="chip" data-val="healing">Healing / Bodywork</div>
+              <div class="chip" data-val="creative">Creative arts</div>
+              <div class="chip" data-val="tech">IT / Digital / Media</div>
+              <div class="chip" data-val="business-skills">Business / Finance</div>
+              <div class="chip" data-val="research">Research / Writing</div>
+              <div class="chip" data-val="land">Land / Water management</div>
+              <div class="chip" data-val="governance">Governance / Law</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">How do you contribute best in a group?</label>
+            <div class="chip-group" id="f-role">
+              <div class="chip" data-val="doer">Hands-on doer</div>
+              <div class="chip" data-val="planner">Planner / Strategist</div>
+              <div class="chip" data-val="advisor">Guide / Advisor</div>
+              <div class="chip" data-val="communicator">Communicator / Connector</div>
+              <div class="chip" data-val="supporter">Support / Motivator</div>
+              <div class="chip" data-val="spaceholder">Space holder / Caretaker</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Work environment where you thrive</label>
+            <div class="chip-group" id="f-environment">
+              <div class="chip" data-val="structured">Structured with clear steps</div>
+              <div class="chip" data-val="flexible">Flexible with freedom to explore</div>
+              <div class="chip" data-val="mixed">A mix of both</div>
+              <div class="chip" data-val="outdoor">Outdoors / Physical</div>
+              <div class="chip" data-val="independent">Independently, in my own time</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-top:2rem;">
+            <button class="form-btn-ghost" onclick="prevStep(3)">← Back</button>
+            <button class="form-btn" onclick="nextStep(3)">Continue →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 4: Vision & Open Field ── -->
+        <div class="form-step" data-step="4">
+          <div class="step-heading">Your vision</div>
+          <div class="step-sub">The most important step — in your own words.</div>
+
+          <div class="field-group">
+            <label class="field-label">What does a better world look like to you? <span class="req">*</span></label>
+            <textarea class="f-textarea" id="f-vision" placeholder="No right or wrong answer. Write freely — a sentence or a paragraph." rows="4"></textarea>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" id="specific-q-label">What specific contribution or collaboration are you imagining?</label>
+            <textarea class="f-textarea" id="f-specific" placeholder="What would you like to explore with METARA?" rows="3"></textarea>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">What is the best way and time to reach you?</label>
+            <input class="f-input" type="text" id="f-contact-pref" placeholder="e.g. WhatsApp mornings, email anytime, call after 5pm…">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">How did you hear about METARA?</label>
+            <div class="chip-group" id="f-source">
+              <div class="chip" data-val="word">Word of mouth</div>
+              <div class="chip" data-val="search">Web search</div>
+              <div class="chip" data-val="social">Social media</div>
+              <div class="chip" data-val="event">Event or market</div>
+              <div class="chip" data-val="referral">Referred by someone</div>
+              <div class="chip" data-val="other-source">Other</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-top:2rem;">
+            <button class="form-btn-ghost" onclick="prevStep(4)">← Back</button>
+            <button class="form-btn" id="submit-btn" onclick="submitForm()">Send with love ♡</button>
+          </div>
+        </div>
+
+      </div><!-- /form-steps -->
+
+      <!-- SUCCESS STATE -->
+      <div id="form-success" style="display:none;text-align:center;padding:4rem 2rem;">
+        <div style="font-size:2.5rem;margin-bottom:1.5rem;">✦</div>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--text);margin-bottom:1rem;">Thank you, <span id="success-name"></span>.</h3>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 2rem;line-height:1.8;">Your message has been received. We read every response personally and will be in touch at <span id="success-email" style="color:var(--gold);"></span>.</p>
+        <p style="color:var(--muted);font-size:0.85rem;font-style:italic;">In the meantime — you are already part of something that is growing.</p>
+      </div>
+
+    </div><!-- /metara-form-wrap -->
+
+    <!-- direct email fallback -->
+    <div style="text-align:center;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);">
+      <p style="color:var(--muted);font-size:0.82rem;">Prefer to write directly?</p>
+      <a href="mailto:love@metara.co.za" style="color:var(--gold);font-size:0.88rem;text-decoration:none;letter-spacing:0.08em;">love@metara.co.za</a>
+      <p style="color:var(--muted);font-size:0.78rem;margin-top:0.3rem;">Plettenberg Bay · Western Cape · South Africa</p>
+    </div>
+
+  </section>
+
+  <!-- ── FORM STYLES & LOGIC ── -->
+  <style>
+    /* layout */
+    #metara-form-wrap { max-width: 640px; }
+    .form-step { display: none; }
+    .form-step.active { display: block; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    .step-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .step-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+    /* fields */
+    .field-group { margin-bottom: 1.8rem; }
+    .field-label {
+      display: block; margin-bottom: 0.5rem;
+      font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .req { color: var(--gold); }
+    .f-input, .f-textarea {
+      width: 100%; background: var(--cosmos);
+      border: 1px solid var(--border); color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 0.95rem;
+      padding: 0.8rem 1rem; outline: none;
+      transition: border-color 0.3s;
+      border-radius: 2px;
+    }
+    .f-input:focus, .f-textarea:focus { border-color: var(--gold); }
+    .f-textarea { resize: vertical; line-height: 1.6; }
+    ::placeholder { color: var(--muted); opacity: 0.6; }
+
+    /* chips */
+    .chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip {
+      padding: 0.45rem 1rem; border: 1px solid var(--border);
+      font-size: 0.82rem; color: var(--muted);
+      cursor: pointer; transition: all 0.25s; border-radius: 2px;
+      user-select: none;
+    }
+    .chip:hover { border-color: rgba(200,169,110,0.5); color: var(--text); }
+    .chip.selected { border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.08); }
+
+    /* buttons */
+    .form-btn {
+      padding: 0.85rem 2.2rem; border: 1px solid var(--gold);
+      background: transparent; color: var(--gold); cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 0.8rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .form-btn:hover { background: var(--gold); color: var(--deep); }
+    .form-btn-ghost {
+      padding: 0.85rem 1.8rem; border: 1px solid rgba(200,169,110,0.2);
+      background: transparent; color: var(--muted); cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 0.8rem;
+      letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s;
+    }
+    .form-btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+
+    /* error */
+    .field-error { border-color: #c0392b !important; }
+    .error-msg { font-size:0.78rem; color:#c0392b; margin-top:0.3rem; display:block; }
+  </style>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    const formData = {};
+
+    function updateProgress() {
+      const pct = Math.round(((currentStep - 1) / totalSteps) * 100);
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-pct').textContent = pct + '%';
+      document.getElementById('progress-label').textContent = 'Step ' + currentStep + ' of ' + totalSteps;
+    }
+
+    // ── CHIP LOGIC ──
+    document.querySelectorAll('.chip-group:not(.multi) .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.closest('.chip-group').querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        chip.classList.add('selected');
+      });
+    });
+    document.querySelectorAll('.chip-group.multi .chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    function getChipVal(id) {
+      const sel = document.querySelector('#' + id + ' .chip.selected');
+      return sel ? sel.dataset.val : null;
+    }
+    function getChipVals(id) {
+      return [...document.querySelectorAll('#' + id + ' .chip.selected')].map(c => c.dataset.val);
+    }
+
+    // ── STEP NAVIGATION ──
+    function showStep(n) {
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+      document.querySelector('[data-step="' + n + '"]').classList.add('active');
+      currentStep = n;
+      updateProgress();
+      window.scrollTo({ top: document.getElementById('connect').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    function nextStep(from) {
+      if (from === 1) {
+        const name = document.getElementById('f-name').value.trim();
+        const email = document.getElementById('f-email').value.trim();
+        const who = getChipVal('f-who');
+        if (!name || !email || !who) {
+          if (!name) highlight('f-name');
+          if (!email) highlight('f-email');
+          if (!who) shakeChips('f-who');
+          return;
+        }
+        formData.name = name;
+        formData.email = email;
+        formData.location = document.getElementById('f-location').value.trim();
+        formData.who = who;
+        adaptStep2(who);
+        showStep(2);
+      } else if (from === 2) {
+        showStep(3);
+        adaptStep4();
+      } else if (from === 3) {
+        showStep(4);
+      }
+    }
+
+    function prevStep(from) { showStep(from - 1); }
+
+    function adaptStep2(who) {
+      document.querySelectorAll('.branch').forEach(b => b.style.display = 'none');
+      const branch = document.getElementById('branch-' + who);
+      if (branch) branch.style.display = 'block';
+      const headings = {
+        individual: ['What is drawing you here?', 'Your situation, in your own words.'],
+        business: ['Tell us about your business', 'Help us understand where you are right now.'],
+        organisation: ['About your organisation', 'How might our missions align?'],
+        practitioner: ['Your healing practice', 'We love working with conscious practitioners.'],
+        creative: ['Your creative practice', 'METARA runs on beauty as much as systems.'],
+        investor: ['Your interest in METARA', 'We welcome values-aligned investment.']
+      };
+      const h = headings[who] || ['What draws you to METARA?', ''];
+      document.getElementById('s2-heading').textContent = h[0];
+      document.getElementById('s2-sub').textContent = h[1];
+    }
+
+    function adaptStep4() {
+      const who = formData.who;
+      const labels = {
+        individual: 'What specific experience or path are you hoping to explore with METARA?',
+        business: 'Describe what a successful collaboration with METARA would look like for your business.',
+        organisation: 'What project or partnership do you have in mind?',
+        practitioner: 'What would you love to offer, and what would you need in return?',
+        creative: 'What do you imagine creating within or for METARA?',
+        investor: 'What are you hoping to learn from an initial conversation?'
+      };
+      const el = document.getElementById('specific-q-label');
+      if (el && labels[who]) el.textContent = labels[who];
+    }
+
+    // ── SUBMIT ──
+    function submitForm() {
+      const vision = document.getElementById('f-vision').value.trim();
+      if (!vision) { highlight('f-vision'); return; }
+
+      formData.skills = getChipVals('f-skills');
+      formData.role = getChipVal('f-role');
+      formData.environment = getChipVal('f-environment');
+      formData.vision = vision;
+      formData.specific = document.getElementById('f-specific').value.trim();
+      formData.contactPref = document.getElementById('f-contact-pref').value.trim();
+      formData.source = getChipVal('f-source');
+
+      // Simulate submission (replace with Cloudflare Worker endpoint when ready)
+      const btn = document.getElementById('submit-btn');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        document.getElementById('form-steps').style.display = 'none';
+        document.getElementById('form-progress').style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+        document.getElementById('success-name').textContent = formData.name.split(' ')[0];
+        document.getElementById('success-email').textContent = formData.email;
+        updateProgress();
+      }, 900);
+    }
+
+    // ── HELPERS ──
+    function highlight(id) {
+      const el = document.getElementById(id);
+      el.classList.add('field-error');
+      el.addEventListener('input', () => el.classList.remove('field-error'), { once: true });
+    }
+    function shakeChips(id) {
+      const el = document.getElementById(id);
+      el.style.outline = '1px solid #c0392b';
+      setTimeout(() => el.style.outline = '', 1500);
+    }
+
+    updateProgress();
+  </script>
+
+</div>
+
+<footer>
+  <span class="f-logo">METARA</span>
+  <p>Pioneering practical pathways toward regenerative living · Plettenberg Bay, South Africa</p>
+  <p style="margin-top:0.5rem; opacity:0.5;">© 2026 METARA (Pty) Ltd · All rights reserved</p>
+</footer>
+
+</body>
+</html>
