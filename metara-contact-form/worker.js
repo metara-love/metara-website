@@ -109,7 +109,7 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: env.FROM_EMAIL,           // e.g. "METARA Website <noreply@metara.co.za>"
+          from: env.FROM_EMAIL,           // e.g. "METARA Website <noreply@contact.metara.co.za>"
           to: env.TO_EMAIL,               // e.g. "love@metara.co.za"
           reply_to: email,                // lets you hit "reply" and respond directly to the visitor
           subject: `[${intent}] New message from ${name}`,
