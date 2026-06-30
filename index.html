@@ -474,318 +474,94 @@
 
   <!-- CONNECT -->
   <div class="divider"><span>Get involved</span></div>
+
+  <!-- CONNECT -->
+  <div class="divider"><span>Get involved</span></div>
   <section id="connect" style="padding-bottom: 8rem;">
     <span class="section-label">Start the conversation</span>
     <h2 class="section-title">Ready to be part of something<br>that actually <em style="font-style:italic; color:var(--gold)">regenerates</em>?</h2>
-    <p class="section-body" style="margin-bottom:3rem;">Tell us a little about yourself and what draws you to METARA. We'll read every response personally and reach out to explore how we might work together.</p>
+    <p class="section-body" style="margin-bottom:2.5rem;">Tell us what brings you here and we'll respond personally. Every message is read by a human being.</p>
 
-    <!-- ── INTELLIGENT FORM ── -->
-    <div id="metara-form-wrap">
+    <div id="mf-wrap">
 
       <!-- PROGRESS -->
-      <div id="form-progress" style="margin-bottom:2rem;">
+      <div id="mf-progress" style="margin-bottom:2rem; display:none;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
-          <span id="progress-label" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);">Step 1 of 4</span>
-          <span id="progress-pct" style="font-size:0.72rem;color:var(--muted);">0%</span>
+          <span id="mf-progress-label" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);"></span>
+          <button type="button" id="mf-start-over" onclick="mfReset()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;letter-spacing:0.08em;text-decoration:underline;">Start over</button>
         </div>
         <div style="height:2px;background:rgba(200,169,110,0.15);border-radius:2px;overflow:hidden;">
-          <div id="progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.5s ease;"></div>
+          <div id="mf-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.5s ease;"></div>
         </div>
       </div>
 
-      <!-- STEP PANELS -->
-      <div id="form-steps">
+      <!-- ── INTENT SELECTION (always step 0) ── -->
+      <div id="mf-intent-panel">
+        <div class="step-heading">What brings you here?</div>
+        <div class="step-sub">Choose the option closest to your reason for reaching out — we'll tailor the next few questions accordingly.</div>
 
-        <!-- ── STEP 1: Who are you? ── -->
-        <div class="form-step active" data-step="1">
-          <div class="step-heading">Who are you?</div>
-          <div class="step-sub">A few basics so we know how to reach you.</div>
-
-          <div class="field-group">
-            <label class="field-label">Your name <span class="req">*</span></label>
-            <input class="f-input" type="text" id="f-name" placeholder="First name is fine">
+        <div class="intent-grid">
+          <div class="intent-card" data-intent="onboarding" onclick="mfSelectIntent('onboarding')">
+            <div class="intent-icon">✦</div>
+            <div class="intent-name">Onboarding</div>
+            <div class="intent-desc">I want to join the METARA ecosystem — as a collaborator, business, member or resident.</div>
           </div>
-
-          <div class="field-group">
-            <label class="field-label">Email address <span class="req">*</span></label>
-            <input class="f-input" type="email" id="f-email" placeholder="love@yourdomain.com">
+          <div class="intent-card" data-intent="partnership" onclick="mfSelectIntent('partnership')">
+            <div class="intent-icon">◈</div>
+            <div class="intent-name">Partnership</div>
+            <div class="intent-desc">My organisation wants to explore collaboration, research, or a project together.</div>
           </div>
-
-          <div class="field-group">
-            <label class="field-label">Where are you based?</label>
-            <input class="f-input" type="text" id="f-location" placeholder="Town, region or country">
+          <div class="intent-card" data-intent="investment" onclick="mfSelectIntent('investment')">
+            <div class="intent-icon">◎</div>
+            <div class="intent-name">Investment &amp; Funding</div>
+            <div class="intent-desc">I'm interested in funding, grants, or investing in METARA's vision.</div>
           </div>
-
-          <div class="field-group">
-            <label class="field-label">What best describes you? <span class="req">*</span></label>
-            <div class="chip-group" id="f-who">
-              <div class="chip" data-val="individual">An individual</div>
-              <div class="chip" data-val="business">A local business</div>
-              <div class="chip" data-val="organisation">An organisation / NPO</div>
-              <div class="chip" data-val="practitioner">A healer / practitioner</div>
-              <div class="chip" data-val="creative">A creative / artist</div>
-              <div class="chip" data-val="investor">An investor / funder</div>
-            </div>
+          <div class="intent-card" data-intent="quotation" onclick="mfSelectIntent('quotation')">
+            <div class="intent-icon">⬡</div>
+            <div class="intent-name">Quotation</div>
+            <div class="intent-desc">I'd like a proposal for consulting, implementation or facilitation services.</div>
           </div>
-
-          <button class="form-btn" onclick="nextStep(1)">Continue →</button>
-        </div>
-
-        <!-- ── STEP 2: What draws you? (adapts by who-type) ── -->
-        <div class="form-step" data-step="2">
-          <div class="step-heading" id="s2-heading">What draws you to METARA?</div>
-          <div class="step-sub" id="s2-sub">We'd love to understand your situation.</div>
-
-          <!-- INDIVIDUAL branch -->
-          <div class="branch" id="branch-individual" style="display:none;">
-            <div class="field-group">
-              <label class="field-label">What is calling you right now?</label>
-              <div class="chip-group" id="f-calling">
-                <div class="chip" data-val="purpose">Finding purpose or direction</div>
-                <div class="chip" data-val="community">Deeper community connection</div>
-                <div class="chip" data-val="healing">Rest, healing or retreat</div>
-                <div class="chip" data-val="skills">Learning regenerative skills</div>
-                <div class="chip" data-val="livelihood">Building a meaningful livelihood</div>
-                <div class="chip" data-val="contribute">Contributing my skills to something bigger</div>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label">How would you describe your energy? (choose the closest)</label>
-              <div class="chip-group" id="f-element">
-                <div class="chip" data-val="fire">🔥 Fire — passionate, action-oriented, transformative</div>
-                <div class="chip" data-val="air">🌬️ Air — visionary, communicative, connector</div>
-                <div class="chip" data-val="water">🌊 Water — empathic, intuitive, depth-seeking</div>
-                <div class="chip" data-val="earth">🪨 Earth — grounded, practical, reliable</div>
-                <div class="chip" data-val="unsure">I'm not sure yet</div>
-              </div>
-            </div>
+          <div class="intent-card" data-intent="request" onclick="mfSelectIntent('request')">
+            <div class="intent-icon">◇</div>
+            <div class="intent-name">Request</div>
+            <div class="intent-desc">I need specific information, a resource, or have a media enquiry.</div>
           </div>
-
-          <!-- BUSINESS branch -->
-          <div class="branch" id="branch-business" style="display:none;">
-            <div class="field-group">
-              <label class="field-label">What kind of business do you run?</label>
-              <input class="f-input" type="text" id="f-biz-type" placeholder="e.g. café, farm, artisan studio, health practice…">
-            </div>
-            <div class="field-group">
-              <label class="field-label">What's your biggest current challenge?</label>
-              <div class="chip-group" id="f-biz-challenge">
-                <div class="chip" data-val="waste">Waste I can't use or afford to remove</div>
-                <div class="chip" data-val="customers">Finding consistent customers</div>
-                <div class="chip" data-val="costs">High input or operational costs</div>
-                <div class="chip" data-val="isolation">Operating in isolation</div>
-                <div class="chip" data-val="marketing">Visibility and marketing</div>
-                <div class="chip" data-val="purpose">Aligning profit with purpose</div>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label">Approximate monthly revenue (helps us understand context)</label>
-              <div class="chip-group" id="f-biz-size">
-                <div class="chip" data-val="micro">Under R20k</div>
-                <div class="chip" data-val="small">R20k – R100k</div>
-                <div class="chip" data-val="medium">R100k – R500k</div>
-                <div class="chip" data-val="large">Over R500k</div>
-                <div class="chip" data-val="prefer-not">Prefer not to say</div>
-              </div>
-            </div>
+          <div class="intent-card" data-intent="feedback" onclick="mfSelectIntent('feedback')">
+            <div class="intent-icon">♡</div>
+            <div class="intent-name">Feedback</div>
+            <div class="intent-desc">I have a compliment, concern, or suggestion to share.</div>
           </div>
-
-          <!-- ORGANISATION branch -->
-          <div class="branch" id="branch-organisation" style="display:none;">
-            <div class="field-group">
-              <label class="field-label">Name of your organisation</label>
-              <input class="f-input" type="text" id="f-org-name" placeholder="Organisation name">
+          <div class="intent-card intent-card--wide" data-intent="other" onclick="mfSelectIntent('other')">
+            <div>
+              <div class="intent-name" style="margin-bottom:0.2rem;">Something else</div>
+              <div class="intent-desc">Not quite any of the above — just let us know what's on your mind.</div>
             </div>
-            <div class="field-group">
-              <label class="field-label">What is your primary focus area?</label>
-              <div class="chip-group" id="f-org-focus">
-                <div class="chip" data-val="ecology">Ecological restoration</div>
-                <div class="chip" data-val="community">Community development</div>
-                <div class="chip" data-val="education">Education</div>
-                <div class="chip" data-val="economy">Alternative economy</div>
-                <div class="chip" data-val="health">Health and wellbeing</div>
-                <div class="chip" data-val="culture">Arts and culture</div>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label">How might you collaborate with METARA?</label>
-              <div class="chip-group" id="f-org-collab">
-                <div class="chip" data-val="partner">Project partnership</div>
-                <div class="chip" data-val="fund">Funding or grants</div>
-                <div class="chip" data-val="knowledge">Knowledge sharing</div>
-                <div class="chip" data-val="network">Network connection</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- PRACTITIONER branch -->
-          <div class="branch" id="branch-practitioner" style="display:none;">
-            <div class="field-group">
-              <label class="field-label">What healing or facilitation modalities do you work with?</label>
-              <input class="f-input" type="text" id="f-prac-modality" placeholder="e.g. yoga, somatic therapy, herbalism, sound healing…">
-            </div>
-            <div class="field-group">
-              <label class="field-label">What are you looking for?</label>
-              <div class="chip-group" id="f-prac-seeking">
-                <div class="chip" data-val="space">A space to offer sessions</div>
-                <div class="chip" data-val="community">A community to be part of</div>
-                <div class="chip" data-val="retreat">Co-creating retreat programmes</div>
-                <div class="chip" data-val="residency">A facilitator residency</div>
-                <div class="chip" data-val="collab">Collaboration with other practitioners</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- CREATIVE branch -->
-          <div class="branch" id="branch-creative" style="display:none;">
-            <div class="field-group">
-              <label class="field-label">What is your creative practice?</label>
-              <input class="f-input" type="text" id="f-creative-type" placeholder="e.g. music, visual art, writing, ceramics…">
-            </div>
-            <div class="field-group">
-              <label class="field-label">How do you imagine contributing to METARA?</label>
-              <div class="chip-group" id="f-creative-contrib">
-                <div class="chip" data-val="events">Performing or exhibiting at events</div>
-                <div class="chip" data-val="workshops">Running creative workshops</div>
-                <div class="chip" data-val="identity">Contributing to METARA's visual identity</div>
-                <div class="chip" data-val="documentation">Documenting the community story</div>
-                <div class="chip" data-val="residency">An artist residency</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- INVESTOR branch -->
-          <div class="branch" id="branch-investor" style="display:none;">
-            <div class="field-group">
-              <label class="field-label">What draws you to METARA's model?</label>
-              <div class="chip-group" id="f-inv-interest">
-                <div class="chip" data-val="circular">Circular economy innovation</div>
-                <div class="chip" data-val="community">Community development impact</div>
-                <div class="chip" data-val="cooperative">Cooperative governance model</div>
-                <div class="chip" data-val="retreat">Holistic retreat centre</div>
-                <div class="chip" data-val="all">The whole ecosystem</div>
-              </div>
-            </div>
-            <div class="field-group">
-              <label class="field-label">What type of involvement are you considering?</label>
-              <div class="chip-group" id="f-inv-type">
-                <div class="chip" data-val="grant">Grant or donation</div>
-                <div class="chip" data-val="impact">Impact investment</div>
-                <div class="chip" data-val="inkind">In-kind resources</div>
-                <div class="chip" data-val="explore">Still exploring</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:1rem;margin-top:2rem;">
-            <button class="form-btn-ghost" onclick="prevStep(2)">← Back</button>
-            <button class="form-btn" onclick="nextStep(2)">Continue →</button>
           </div>
         </div>
+      </div>
 
-        <!-- ── STEP 3: Skills & Contribution ── -->
-        <div class="form-step" data-step="3">
-          <div class="step-heading">What you bring</div>
-          <div class="step-sub">METARA thrives on diverse contributions. What's yours?</div>
-
-          <div class="field-group">
-            <label class="field-label">Core skills or experience (select all that apply)</label>
-            <div class="chip-group multi" id="f-skills">
-              <div class="chip" data-val="building">Building / Carpentry</div>
-              <div class="chip" data-val="gardening">Gardening / Permaculture</div>
-              <div class="chip" data-val="cooking">Cooking / Food production</div>
-              <div class="chip" data-val="organizing">Organising / Coordinating</div>
-              <div class="chip" data-val="teaching">Teaching / Facilitating</div>
-              <div class="chip" data-val="healing">Healing / Bodywork</div>
-              <div class="chip" data-val="creative">Creative arts</div>
-              <div class="chip" data-val="tech">IT / Digital / Media</div>
-              <div class="chip" data-val="business-skills">Business / Finance</div>
-              <div class="chip" data-val="research">Research / Writing</div>
-              <div class="chip" data-val="land">Land / Water management</div>
-              <div class="chip" data-val="governance">Governance / Law</div>
-            </div>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">How do you contribute best in a group?</label>
-            <div class="chip-group" id="f-role">
-              <div class="chip" data-val="doer">Hands-on doer</div>
-              <div class="chip" data-val="planner">Planner / Strategist</div>
-              <div class="chip" data-val="advisor">Guide / Advisor</div>
-              <div class="chip" data-val="communicator">Communicator / Connector</div>
-              <div class="chip" data-val="supporter">Support / Motivator</div>
-              <div class="chip" data-val="spaceholder">Space holder / Caretaker</div>
-            </div>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">Work environment where you thrive</label>
-            <div class="chip-group" id="f-environment">
-              <div class="chip" data-val="structured">Structured with clear steps</div>
-              <div class="chip" data-val="flexible">Flexible with freedom to explore</div>
-              <div class="chip" data-val="mixed">A mix of both</div>
-              <div class="chip" data-val="outdoor">Outdoors / Physical</div>
-              <div class="chip" data-val="independent">Independently, in my own time</div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:1rem;margin-top:2rem;">
-            <button class="form-btn-ghost" onclick="prevStep(3)">← Back</button>
-            <button class="form-btn" onclick="nextStep(3)">Continue →</button>
-          </div>
-        </div>
-
-        <!-- ── STEP 4: Vision & Open Field ── -->
-        <div class="form-step" data-step="4">
-          <div class="step-heading">Your vision</div>
-          <div class="step-sub">The most important step — in your own words.</div>
-
-          <div class="field-group">
-            <label class="field-label">What does a better world look like to you? <span class="req">*</span></label>
-            <textarea class="f-textarea" id="f-vision" placeholder="No right or wrong answer. Write freely — a sentence or a paragraph." rows="4"></textarea>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label" id="specific-q-label">What specific contribution or collaboration are you imagining?</label>
-            <textarea class="f-textarea" id="f-specific" placeholder="What would you like to explore with METARA?" rows="3"></textarea>
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">What is the best way and time to reach you?</label>
-            <input class="f-input" type="text" id="f-contact-pref" placeholder="e.g. WhatsApp mornings, email anytime, call after 5pm…">
-          </div>
-
-          <div class="field-group">
-            <label class="field-label">How did you hear about METARA?</label>
-            <div class="chip-group" id="f-source">
-              <div class="chip" data-val="word">Word of mouth</div>
-              <div class="chip" data-val="search">Web search</div>
-              <div class="chip" data-val="social">Social media</div>
-              <div class="chip" data-val="event">Event or market</div>
-              <div class="chip" data-val="referral">Referred by someone</div>
-              <div class="chip" data-val="other-source">Other</div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:1rem;margin-top:2rem;">
-            <button class="form-btn-ghost" onclick="prevStep(4)">← Back</button>
-            <button class="form-btn" id="submit-btn" onclick="submitForm()">Send with love ♡</button>
-          </div>
-        </div>
-
-      </div><!-- /form-steps -->
+      <!-- ── DYNAMIC FORM STEPS ── -->
+      <div id="mf-steps" style="display:none;"></div>
 
       <!-- SUCCESS STATE -->
-      <div id="form-success" style="display:none;text-align:center;padding:4rem 2rem;">
+      <div id="mf-success" style="display:none;text-align:center;padding:4rem 2rem;">
         <div style="font-size:2.5rem;margin-bottom:1.5rem;">✦</div>
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--text);margin-bottom:1rem;">Thank you, <span id="success-name"></span>.</h3>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 2rem;line-height:1.8;">Your message has been received. We read every response personally and will be in touch at <span id="success-email" style="color:var(--gold);"></span>.</p>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--text);margin-bottom:1rem;">Thank you, <span id="mf-success-name"></span>.</h3>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 2rem;line-height:1.8;">Your message has been received. We read every response personally and will be in touch at <span id="mf-success-email" style="color:var(--gold);"></span>.</p>
         <p style="color:var(--muted);font-size:0.85rem;font-style:italic;">In the meantime — you are already part of something that is growing.</p>
       </div>
 
-    </div><!-- /metara-form-wrap -->
+      <!-- ERROR STATE -->
+      <div id="mf-error" style="display:none;text-align:center;padding:2.5rem 2rem;border:1px solid rgba(192,57,43,0.4);background:rgba(192,57,43,0.06);">
+        <p style="color:#e08a82;font-size:0.92rem;margin-bottom:1rem;">Something went wrong sending your message. Please try again, or write to us directly.</p>
+        <a href="mailto:love@metara.co.za" style="color:var(--gold);text-decoration:none;">love@metara.co.za</a>
+        <div style="margin-top:1.2rem;">
+          <button type="button" class="form-btn-ghost" onclick="document.getElementById('mf-error').style.display='none';document.getElementById('mf-steps').style.display='block';">← Back to form</button>
+        </div>
+      </div>
 
-    <!-- direct email fallback -->
+    </div><!-- /mf-wrap -->
+
     <div style="text-align:center;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);">
       <p style="color:var(--muted);font-size:0.82rem;">Prefer to write directly?</p>
       <a href="mailto:love@metara.co.za" style="color:var(--gold);font-size:0.88rem;text-decoration:none;letter-spacing:0.08em;">love@metara.co.za</a>
@@ -794,26 +570,36 @@
 
   </section>
 
-  <!-- ── FORM STYLES & LOGIC ── -->
+  <!-- ══════════ FORM STYLES ══════════ -->
   <style>
-    /* layout */
-    #metara-form-wrap { max-width: 640px; }
-    .form-step { display: none; }
-    .form-step.active { display: block; animation: fadeUp 0.4s ease; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    #mf-wrap { max-width: 680px; }
 
     .step-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem; font-weight: 300; color: var(--text);
+      font-size: 1.7rem; font-weight: 300; color: var(--text);
       margin-bottom: 0.4rem;
     }
-    .step-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .step-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; }
 
-    /* fields */
-    .field-group { margin-bottom: 1.8rem; }
+    /* intent grid */
+    .intent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); }
+    .intent-card { background:var(--cosmos); padding:1.6rem 1.2rem; cursor:pointer; transition:background 0.25s; }
+    .intent-card:hover { background:var(--indigo); }
+    .intent-card--wide { grid-column: span 3; display:flex; align-items:center; padding:1.2rem 1.6rem; }
+    .intent-icon { font-size:1.3rem; color:var(--gold); margin-bottom:0.6rem; }
+    .intent-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:400; color:var(--text); margin-bottom:0.4rem; }
+    .intent-desc { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+    @media (max-width: 640px) { .intent-grid { grid-template-columns: 1fr 1fr; } .intent-card--wide { grid-column: span 2; } }
+
+    /* form step */
+    .mf-step { display: none; }
+    .mf-step.active { display: block; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    .field-group { margin-bottom: 1.7rem; }
     .field-label {
       display: block; margin-bottom: 0.5rem;
-      font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+      font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase;
       color: var(--muted);
     }
     .req { color: var(--gold); }
@@ -822,14 +608,12 @@
       border: 1px solid var(--border); color: var(--text);
       font-family: 'Inter', sans-serif; font-size: 0.95rem;
       padding: 0.8rem 1rem; outline: none;
-      transition: border-color 0.3s;
-      border-radius: 2px;
+      transition: border-color 0.3s; border-radius: 2px;
     }
     .f-input:focus, .f-textarea:focus { border-color: var(--gold); }
     .f-textarea { resize: vertical; line-height: 1.6; }
     ::placeholder { color: var(--muted); opacity: 0.6; }
 
-    /* chips */
     .chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .chip {
       padding: 0.45rem 1rem; border: 1px solid var(--border);
@@ -840,15 +624,14 @@
     .chip:hover { border-color: rgba(200,169,110,0.5); color: var(--text); }
     .chip.selected { border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.08); }
 
-    /* buttons */
     .form-btn {
       padding: 0.85rem 2.2rem; border: 1px solid var(--gold);
       background: transparent; color: var(--gold); cursor: pointer;
       font-family: 'Inter', sans-serif; font-size: 0.8rem;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      transition: all 0.3s;
+      letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.3s;
     }
     .form-btn:hover { background: var(--gold); color: var(--deep); }
+    .form-btn:disabled { opacity: 0.5; cursor: default; }
     .form-btn-ghost {
       padding: 0.85rem 1.8rem; border: 1px solid rgba(200,169,110,0.2);
       background: transparent; color: var(--muted); cursor: pointer;
@@ -857,150 +640,317 @@
     }
     .form-btn-ghost:hover { border-color: var(--muted); color: var(--text); }
 
-    /* error */
     .field-error { border-color: #c0392b !important; }
-    .error-msg { font-size:0.78rem; color:#c0392b; margin-top:0.3rem; display:block; }
   </style>
 
+  <!-- ══════════ FORM LOGIC ══════════ -->
   <script>
-    let currentStep = 1;
-    const totalSteps = 4;
-    const formData = {};
+  (function() {
 
-    function updateProgress() {
-      const pct = Math.round(((currentStep - 1) / totalSteps) * 100);
-      document.getElementById('progress-bar').style.width = pct + '%';
-      document.getElementById('progress-pct').textContent = pct + '%';
-      document.getElementById('progress-label').textContent = 'Step ' + currentStep + ' of ' + totalSteps;
-    }
+    // ── INTENT CONFIGURATION ──
+    const MF_INTENTS = {
+      onboarding: {
+        label: 'Onboarding',
+        heading: 'Let\'s get you onboarded',
+        sub: 'A few questions so we understand how you\'d like to be part of METARA.',
+        fields: [
+          { id:'who', label:'What best describes you?', type:'chips', required:true,
+            options:[['individual','An individual'],['business','A local business'],['cooperative','Cooperative member'],['retreat','Retreat / community resident']] },
+          { id:'calling', label:'What is calling you right now?', type:'chips',
+            options:[['purpose','Finding purpose or direction'],['community','Deeper community connection'],['healing','Rest, healing or retreat'],['skills','Learning regenerative skills'],['livelihood','Building a meaningful livelihood'],['contribute','Contributing my skills']] },
+          { id:'skills', label:'Core skills or experience (select all that apply)', type:'chips-multi',
+            options:[['building','Building / Carpentry'],['gardening','Gardening / Permaculture'],['cooking','Cooking / Food'],['organizing','Organising / Coordinating'],['teaching','Teaching / Facilitating'],['healing','Healing / Bodywork'],['creative','Creative arts'],['tech','IT / Digital / Media'],['business-skills','Business / Finance'],['land','Land / Water management']] },
+          { id:'vision', label:'What does a better world look like to you?', type:'textarea', required:true,
+            placeholder:'No right or wrong answer — write freely.' },
+          { id:'specific', label:'What specific path are you hoping to explore with METARA?', type:'textarea',
+            placeholder:'What would you like to do or become part of?' },
+        ]
+      },
+      partnership: {
+        label: 'Partnership',
+        heading: 'About your organisation',
+        sub: 'Help us understand how our missions might align.',
+        fields: [
+          { id:'org_name', label:'Organisation name', type:'text', required:true, placeholder:'Your organisation' },
+          { id:'org_focus', label:'Primary focus area', type:'chips',
+            options:[['ecology','Ecological restoration'],['community','Community development'],['education','Education'],['economy','Alternative economy'],['health','Health and wellbeing'],['culture','Arts and culture'],['research','Research / academic']] },
+          { id:'collab_type', label:'What kind of collaboration are you imagining?', type:'chips',
+            options:[['project','Joint project'],['knowledge','Knowledge sharing'],['network','Network connection'],['research','Research partnership'],['advocacy','Joint advocacy / policy']] },
+          { id:'details', label:'Tell us about the partnership you have in mind', type:'textarea', required:true,
+            placeholder:'What would success look like for both organisations?' },
+        ]
+      },
+      investment: {
+        label: 'Investment & Funding',
+        heading: 'Your interest in METARA',
+        sub: 'We welcome values-aligned investment, grants and funding partnerships.',
+        fields: [
+          { id:'inv_interest', label:'What draws you to METARA\'s model?', type:'chips',
+            options:[['circular','Circular economy innovation'],['community','Community development impact'],['cooperative','Cooperative governance model'],['retreat','Holistic retreat centre'],['all','The whole ecosystem']] },
+          { id:'inv_type', label:'What type of involvement are you considering?', type:'chips', required:true,
+            options:[['grant','Grant or donation'],['impact','Impact investment'],['inkind','In-kind resources'],['explore','Still exploring']] },
+          { id:'inv_range', label:'Approximate range you have in mind (optional, helps us prepare)', type:'text',
+            placeholder:'e.g. R50,000 – R200,000, or prefer not to say' },
+          { id:'details', label:'What are you hoping to learn from an initial conversation?', type:'textarea', required:true,
+            placeholder:'Share your thinking — we read every word.' },
+        ]
+      },
+      quotation: {
+        label: 'Quotation',
+        heading: 'Tell us about the project',
+        sub: 'The more detail you give us, the more useful our proposal will be.',
+        fields: [
+          { id:'service', label:'What service are you enquiring about?', type:'chips', required:true,
+            options:[['consulting','Consulting / systems design'],['implementation','Project implementation'],['workshop','Workshop / facilitation'],['resource','Resource supply'],['other','Other / not sure yet']] },
+          { id:'org_name', label:'Organisation or business name', type:'text', placeholder:'If applicable' },
+          { id:'timeline', label:'Timeline', type:'chips',
+            options:[['urgent','As soon as possible'],['month','Within a month'],['quarter','Within 3 months'],['flexible','Flexible / exploring']] },
+          { id:'details', label:'Describe what you need', type:'textarea', required:true,
+            placeholder:'Scope, goals, context — anything that helps us understand the project.' },
+        ]
+      },
+      request: {
+        label: 'Request',
+        heading: 'How can we help?',
+        sub: 'Tell us what you need and we\'ll point you in the right direction.',
+        fields: [
+          { id:'req_type', label:'What kind of request is this?', type:'chips', required:true,
+            options:[['resource','Resource or referral'],['advice','Knowledge / advice'],['event','Event information'],['media','Media / press enquiry'],['other','Other']] },
+          { id:'details', label:'Tell us more', type:'textarea', required:true,
+            placeholder:'What are you looking for?' },
+        ]
+      },
+      feedback: {
+        label: 'Feedback',
+        heading: 'We\'re listening',
+        sub: 'Compliments, concerns and suggestions all help us grow.',
+        fields: [
+          { id:'fb_type', label:'What kind of feedback is this?', type:'chips', required:true,
+            options:[['compliment','Compliment'],['complaint','Complaint / concern'],['suggestion','Suggestion'],['reflection','General reflection']] },
+          { id:'details', label:'Share your feedback', type:'textarea', required:true,
+            placeholder:'We read every message personally.' },
+        ]
+      },
+      other: {
+        label: 'Something else',
+        heading: 'Tell us what\'s on your mind',
+        sub: 'No need to fit a category — just write freely.',
+        fields: [
+          { id:'details', label:'What would you like to share?', type:'textarea', required:true,
+            placeholder:'We\'re listening.' },
+        ]
+      },
+    };
 
-    // ── CHIP LOGIC ──
-    document.querySelectorAll('.chip-group:not(.multi) .chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        chip.closest('.chip-group').querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
-        chip.classList.add('selected');
-      });
-    });
-    document.querySelectorAll('.chip-group.multi .chip').forEach(chip => {
-      chip.addEventListener('click', () => chip.classList.toggle('selected'));
-    });
+    // ── STATE ──
+    let mfState = { intent:null, step:0 };
+    const mfData = {};
 
-    function getChipVal(id) {
-      const sel = document.querySelector('#' + id + ' .chip.selected');
-      return sel ? sel.dataset.val : null;
-    }
-    function getChipVals(id) {
-      return [...document.querySelectorAll('#' + id + ' .chip.selected')].map(c => c.dataset.val);
-    }
+    // ── INTENT SELECTION ──
+    window.mfSelectIntent = function(intent) {
+      document.querySelectorAll('.intent-card').forEach(c => c.classList.remove('selected'));
+      document.querySelector('[data-intent="' + intent + '"]').classList.add('selected');
+      mfState.intent = intent;
+      mfData.intent = MF_INTENTS[intent].label;
+      setTimeout(() => mfBuildSteps(intent), 200);
+    };
 
-    // ── STEP NAVIGATION ──
-    function showStep(n) {
-      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-      document.querySelector('[data-step="' + n + '"]').classList.add('active');
-      currentStep = n;
-      updateProgress();
-      window.scrollTo({ top: document.getElementById('connect').offsetTop - 80, behavior: 'smooth' });
-    }
+    // ── BUILD STEPS: [contact info] -> [contextual fields] ──
+    function mfBuildSteps(intent) {
+      const cfg = MF_INTENTS[intent];
+      const stepsEl = document.getElementById('mf-steps');
+      stepsEl.innerHTML = '';
 
-    function nextStep(from) {
-      if (from === 1) {
-        const name = document.getElementById('f-name').value.trim();
-        const email = document.getElementById('f-email').value.trim();
-        const who = getChipVal('f-who');
-        if (!name || !email || !who) {
-          if (!name) highlight('f-name');
-          if (!email) highlight('f-email');
-          if (!who) shakeChips('f-who');
-          return;
+      // STEP 1 — universal contact info
+      const step1 = document.createElement('div');
+      step1.className = 'mf-step';
+      step1.dataset.step = '1';
+      step1.innerHTML = `
+        <div class="step-heading">Who are you?</div>
+        <div class="step-sub">A few basics so we know how to reach you.</div>
+        <div class="field-group">
+          <label class="field-label">Your name <span class="req">*</span></label>
+          <input class="f-input" type="text" id="mf-name" placeholder="First name is fine">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email address <span class="req">*</span></label>
+          <input class="f-input" type="email" id="mf-email" placeholder="you@example.com">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Where are you based?</label>
+          <input class="f-input" type="text" id="mf-location" placeholder="Town, region or country">
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:2rem;">
+          <button type="button" class="form-btn-ghost" onclick="mfReset()">← Change intention</button>
+          <button type="button" class="form-btn" onclick="mfNext(1)">Continue →</button>
+        </div>
+      `;
+      stepsEl.appendChild(step1);
+
+      // STEP 2 — contextual fields for this intent
+      const step2 = document.createElement('div');
+      step2.className = 'mf-step';
+      step2.dataset.step = '2';
+      let fieldsHtml = `<div class="step-heading">${cfg.heading}</div><div class="step-sub">${cfg.sub}</div>`;
+      cfg.fields.forEach(f => {
+        fieldsHtml += `<div class="field-group">`;
+        fieldsHtml += `<label class="field-label">${f.label}${f.required ? ' <span class="req">*</span>' : ''}</label>`;
+        if (f.type === 'text') {
+          fieldsHtml += `<input class="f-input" type="text" id="mf-${f.id}" placeholder="${f.placeholder || ''}">`;
+        } else if (f.type === 'textarea') {
+          fieldsHtml += `<textarea class="f-textarea" id="mf-${f.id}" rows="4" placeholder="${f.placeholder || ''}"></textarea>`;
+        } else if (f.type === 'chips' || f.type === 'chips-multi') {
+          fieldsHtml += `<div class="chip-group" id="mf-${f.id}" data-multi="${f.type === 'chips-multi'}">`;
+          f.options.forEach(([val, txt]) => {
+            fieldsHtml += `<div class="chip" data-val="${val}">${txt}</div>`;
+          });
+          fieldsHtml += `</div>`;
         }
-        formData.name = name;
-        formData.email = email;
-        formData.location = document.getElementById('f-location').value.trim();
-        formData.who = who;
-        adaptStep2(who);
-        showStep(2);
-      } else if (from === 2) {
-        showStep(3);
-        adaptStep4();
-      } else if (from === 3) {
-        showStep(4);
+        fieldsHtml += `</div>`;
+      });
+      fieldsHtml += `
+        <div style="display:flex;gap:1rem;margin-top:2rem;">
+          <button type="button" class="form-btn-ghost" onclick="mfShowStep(1)">← Back</button>
+          <button type="button" class="form-btn" id="mf-submit-btn" onclick="mfSubmit()">Send with love ♡</button>
+        </div>
+      `;
+      step2.innerHTML = fieldsHtml;
+      stepsEl.appendChild(step2);
+
+      // wire up chip clicks for step 2
+      cfg.fields.filter(f => f.type === 'chips' || f.type === 'chips-multi').forEach(f => {
+        const group = document.getElementById('mf-' + f.id);
+        const multi = f.type === 'chips-multi';
+        group.querySelectorAll('.chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            if (multi) {
+              chip.classList.toggle('selected');
+            } else {
+              group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+              chip.classList.add('selected');
+            }
+          });
+        });
+      });
+
+      // reveal
+      document.getElementById('mf-intent-panel').style.display = 'none';
+      stepsEl.style.display = 'block';
+      document.getElementById('mf-progress').style.display = 'block';
+      mfShowStep(1);
+    }
+
+    // ── NAVIGATION ──
+    window.mfShowStep = function(n) {
+      document.querySelectorAll('.mf-step').forEach(s => s.classList.remove('active'));
+      document.querySelector('.mf-step[data-step="' + n + '"]').classList.add('active');
+      mfState.step = n;
+      document.getElementById('mf-progress-bar').style.width = (n === 1 ? 0 : 50) + '%';
+      document.getElementById('mf-progress-label').textContent =
+        MF_INTENTS[mfState.intent].label + ' — Step ' + n + ' of 2';
+      window.scrollTo({ top: document.getElementById('connect').offsetTop - 80, behavior: 'smooth' });
+    };
+
+    window.mfNext = function(from) {
+      if (from === 1) {
+        const name = document.getElementById('mf-name').value.trim();
+        const email = document.getElementById('mf-email').value.trim();
+        let valid = true;
+        if (!name) { mfHighlight('mf-name'); valid = false; }
+        if (!email || !email.includes('@')) { mfHighlight('mf-email'); valid = false; }
+        if (!valid) return;
+        mfData.name = name;
+        mfData.email = email;
+        mfData.location = document.getElementById('mf-location').value.trim();
+        mfShowStep(2);
       }
-    }
+    };
 
-    function prevStep(from) { showStep(from - 1); }
+    window.mfReset = function() {
+      mfState = { intent:null, step:0 };
+      document.querySelectorAll('.intent-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('mf-steps').style.display = 'none';
+      document.getElementById('mf-steps').innerHTML = '';
+      document.getElementById('mf-progress').style.display = 'none';
+      document.getElementById('mf-intent-panel').style.display = 'block';
+      document.getElementById('mf-success').style.display = 'none';
+      document.getElementById('mf-error').style.display = 'none';
+      window.scrollTo({ top: document.getElementById('connect').offsetTop - 80, behavior: 'smooth' });
+    };
 
-    function adaptStep2(who) {
-      document.querySelectorAll('.branch').forEach(b => b.style.display = 'none');
-      const branch = document.getElementById('branch-' + who);
-      if (branch) branch.style.display = 'block';
-      const headings = {
-        individual: ['What is drawing you here?', 'Your situation, in your own words.'],
-        business: ['Tell us about your business', 'Help us understand where you are right now.'],
-        organisation: ['About your organisation', 'How might our missions align?'],
-        practitioner: ['Your healing practice', 'We love working with conscious practitioners.'],
-        creative: ['Your creative practice', 'METARA runs on beauty as much as systems.'],
-        investor: ['Your interest in METARA', 'We welcome values-aligned investment.']
-      };
-      const h = headings[who] || ['What draws you to METARA?', ''];
-      document.getElementById('s2-heading').textContent = h[0];
-      document.getElementById('s2-sub').textContent = h[1];
-    }
-
-    function adaptStep4() {
-      const who = formData.who;
-      const labels = {
-        individual: 'What specific experience or path are you hoping to explore with METARA?',
-        business: 'Describe what a successful collaboration with METARA would look like for your business.',
-        organisation: 'What project or partnership do you have in mind?',
-        practitioner: 'What would you love to offer, and what would you need in return?',
-        creative: 'What do you imagine creating within or for METARA?',
-        investor: 'What are you hoping to learn from an initial conversation?'
-      };
-      const el = document.getElementById('specific-q-label');
-      if (el && labels[who]) el.textContent = labels[who];
+    function mfHighlight(id) {
+      const el = document.getElementById(id);
+      el.classList.add('field-error');
+      el.addEventListener('input', () => el.classList.remove('field-error'), { once:true });
     }
 
     // ── SUBMIT ──
-    function submitForm() {
-      const vision = document.getElementById('f-vision').value.trim();
-      if (!vision) { highlight('f-vision'); return; }
+    window.mfSubmit = function() {
+      const cfg = MF_INTENTS[mfState.intent];
+      let valid = true;
+      const payload = {
+        intent: cfg.label,
+        name: mfData.name,
+        email: mfData.email,
+        location: mfData.location || '',
+        fields: {}
+      };
 
-      formData.skills = getChipVals('f-skills');
-      formData.role = getChipVal('f-role');
-      formData.environment = getChipVal('f-environment');
-      formData.vision = vision;
-      formData.specific = document.getElementById('f-specific').value.trim();
-      formData.contactPref = document.getElementById('f-contact-pref').value.trim();
-      formData.source = getChipVal('f-source');
+      cfg.fields.forEach(f => {
+        if (f.type === 'text' || f.type === 'textarea') {
+          const el = document.getElementById('mf-' + f.id);
+          const val = el.value.trim();
+          if (f.required && !val) { mfHighlight('mf-' + f.id); valid = false; }
+          payload.fields[f.label] = val;
+        } else if (f.type === 'chips') {
+          const sel = document.querySelector('#mf-' + f.id + ' .chip.selected');
+          if (f.required && !sel) {
+            document.getElementById('mf-' + f.id).style.outline = '1px solid #c0392b';
+            setTimeout(() => document.getElementById('mf-' + f.id).style.outline = '', 1500);
+            valid = false;
+          }
+          payload.fields[f.label] = sel ? sel.textContent : '';
+        } else if (f.type === 'chips-multi') {
+          const sels = [...document.querySelectorAll('#mf-' + f.id + ' .chip.selected')].map(c => c.textContent);
+          payload.fields[f.label] = sels.join(', ');
+        }
+      });
 
-      // Simulate submission (replace with Cloudflare Worker endpoint when ready)
-      const btn = document.getElementById('submit-btn');
+      if (!valid) return;
+
+      const btn = document.getElementById('mf-submit-btn');
       btn.textContent = 'Sending…';
       btn.disabled = true;
 
-      setTimeout(() => {
-        document.getElementById('form-steps').style.display = 'none';
-        document.getElementById('form-progress').style.display = 'none';
-        document.getElementById('form-success').style.display = 'block';
-        document.getElementById('success-name').textContent = formData.name.split(' ')[0];
-        document.getElementById('success-email').textContent = formData.email;
-        updateProgress();
-      }, 900);
-    }
+      // ── SUBMIT TO CLOUDFLARE WORKER ──
+      // Replace this URL with your deployed Worker endpoint (see backend guide)
+      const ENDPOINT = 'https://metara-contact-form.YOUR-SUBDOMAIN.workers.dev';
 
-    // ── HELPERS ──
-    function highlight(id) {
-      const el = document.getElementById(id);
-      el.classList.add('field-error');
-      el.addEventListener('input', () => el.classList.remove('field-error'), { once: true });
-    }
-    function shakeChips(id) {
-      const el = document.getElementById(id);
-      el.style.outline = '1px solid #c0392b';
-      setTimeout(() => el.style.outline = '', 1500);
-    }
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Submission failed');
+        return res.json();
+      })
+      .then(() => {
+        document.getElementById('mf-steps').style.display = 'none';
+        document.getElementById('mf-progress').style.display = 'none';
+        document.getElementById('mf-success').style.display = 'block';
+        document.getElementById('mf-success-name').textContent = mfData.name.split(' ')[0];
+        document.getElementById('mf-success-email').textContent = mfData.email;
+      })
+      .catch(() => {
+        document.getElementById('mf-steps').style.display = 'none';
+        document.getElementById('mf-error').style.display = 'block';
+        btn.textContent = 'Send with love ♡';
+        btn.disabled = false;
+      });
+    };
 
-    updateProgress();
+  })();
   </script>
 
 </div>
