@@ -1656,13 +1656,13 @@
   body: JSON.stringify(payload)
 })
 .then(async res => {
-  console.log("Status:", res.status);
+  console.log("HTTP status:", res.status);
 
   const text = await res.text();
-  console.log("Response:", text);
+  console.log("Response body:", text);
 
   if (!res.ok) {
-    throw new Error(`HTTP ${res.status}: ${text}`);
+    throw new Error(text);
   }
 
   return JSON.parse(text);
