@@ -5,7 +5,7 @@
  * Deploy with: wrangler deploy
  * Requires: RESEND_API_KEY secret, and TO_EMAIL / FROM_EMAIL vars (see wrangler.toml)
  */
-
+const ENABLE_RATE_LIMIT = false;
 const ALLOWED_ORIGIN = 'https://metara.co.za'; // update if using www. or different domain
 
 export default {
@@ -40,10 +40,10 @@ export default {
 
     // ── RATE LIMITING (simple IP-based, using Cloudflare KV) ──
     const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-    if (env.RATE_LIMIT_KV) {
+    if (ENABLE_RATE_LIMIT && env.RATE_LIMIT_KV) {
       const rateLimitKey = `rl:${clientIP}`;
       const recent = await env.RATE_LIMIT_KV.get(rateLimitKey);
-      if (recent && parseInt(recent) >= 100) {
+      if (recent && parseInt(recent) >= 100 && ) {
         return jsonResponse({ error: 'Too many submissions. Please try again later.' }, 429);
       }
       const count = recent ? parseInt(recent) + 1 : 1;
