@@ -27,7 +27,7 @@ export default {
       return jsonResponse({ error: 'Invalid JSON' }, 400);
     }
 
-    const { intent, name, email, location, fields } = payload;
+    const { intent, name, email, location, fields, wantsWhatsapp, whatsappPhone } = payload;
 
     if (!intent || !name || !email || !fields) {
       return jsonResponse({ error: 'Missing required fields' }, 400);
@@ -86,6 +86,10 @@ export default {
             <td style="padding:10px 16px;border-bottom:1px solid #2A2A2A;color:#9A9A9A;font-size:13px;vertical-align:top;">Location</td>
             <td style="padding:10px 16px;border-bottom:1px solid #2A2A2A;color:#E8E4D8;font-size:14px;">${escapeHtml(location)}</td>
           </tr>` : ''}
+          ${wantsWhatsapp ? `<tr>
+            <td style="padding:10px 16px;border-bottom:1px solid #2A2A2A;color:#9A9A9A;font-size:13px;vertical-align:top;">WhatsApp Community</td>
+            <td style="padding:10px 16px;border-bottom:1px solid #2A2A2A;color:#25D366;font-size:14px;font-weight:bold;">Yes — ${escapeHtml(whatsappPhone)}</td>
+          </tr>` : ''}
           ${fieldsHtml}
         </table>
       </div>
@@ -97,7 +101,7 @@ export default {
 </body>
 </html>`;
 
-    const emailText = `METARA — ${intent} submission\n\nName: ${name}\nEmail: ${email}\n${location ? 'Location: ' + location + '\n' : ''}\n` +
+    const emailText = `METARA — ${intent} submission\n\nName: ${name}\nEmail: ${email}\n${location ? 'Location: ' + location + '\n' : ''}${wantsWhatsapp ? 'WhatsApp Community: Yes — ' + whatsappPhone + '\n' : ''}\n` +
       Object.entries(fields).filter(([_, v]) => v && v.trim()).map(([k, v]) => `${k}: ${v}`).join('\n');
 
     // ── SEND VIA RESEND ──
@@ -109,7 +113,7 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: env.FROM_EMAIL,           // e.g. "METARA Website <noreply@contact.metara.co.za>"
+          from: env.FROM_EMAIL,           // e.g. "METARA Website <noreply@metara.co.za>"
           to: env.TO_EMAIL,               // e.g. "love@metara.co.za"
           reply_to: email,                // lets you hit "reply" and respond directly to the visitor
           subject: `[${intent}] New message from ${name}`,
