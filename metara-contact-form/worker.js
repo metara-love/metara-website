@@ -125,6 +125,7 @@ export default {
       if (!resendRes.ok) {
         const errBody = await resendRes.text();
         console.error('Resend error:', errBody);
+        console.error("Returning 502 to browser");
         return jsonResponse({ error: 'Failed to send email' }, 502);
       }
 
@@ -132,7 +133,7 @@ export default {
       console.error('Worker error:', err);
       return jsonResponse({ error: 'Internal error' }, 500);
     }
-
+	console.log("Returning success to browser");
     return jsonResponse({ success: true });
   },
 };
