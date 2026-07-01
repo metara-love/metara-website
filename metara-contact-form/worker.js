@@ -43,7 +43,7 @@ export default {
     if (ENABLE_RATE_LIMIT && env.RATE_LIMIT_KV) {
       const rateLimitKey = `rl:${clientIP}`;
       const recent = await env.RATE_LIMIT_KV.get(rateLimitKey);
-      if (recent && parseInt(recent) >= 100 && ) {
+      if (recent && parseInt(recent) >= 100) {
         return jsonResponse({ error: 'Too many submissions. Please try again later.' }, 429);
       }
       const count = recent ? parseInt(recent) + 1 : 1;
