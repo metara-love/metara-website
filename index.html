@@ -1651,27 +1651,38 @@
       const ENDPOINT = 'https://api.metara.co.za';
 
       fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      .then(res => {
-        if (!res.ok) throw new Error('Submission failed');
-        return res.json();
-      })
-      .then(() => {
-        document.getElementById('mf-steps').style.display = 'none';
-        document.getElementById('mf-progress').style.display = 'none';
-        document.getElementById('mf-success').style.display = 'block';
-        document.getElementById('mf-success-name').textContent = mfData.name.split(' ')[0];
-        document.getElementById('mf-success-email').textContent = mfData.email;
-      })
-      .catch(() => {
-        document.getElementById('mf-steps').style.display = 'none';
-        document.getElementById('mf-error').style.display = 'block';
-        btn.textContent = 'Send with love ♡';
-        btn.disabled = false;
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(payload)
+})
+.then(async res => {
+  console.log("Status:", res.status);
+
+  const text = await res.text();
+  console.log("Response:", text);
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}: ${text}`);
+  }
+
+  return JSON.parse(text);
+})
+.then(() => {
+  document.getElementById('mf-steps').style.display = 'none';
+  document.getElementById('mf-progress').style.display = 'none';
+  document.getElementById('mf-success').style.display = 'block';
+  document.getElementById('mf-success-name').textContent = mfData.name.split(' ')[0];
+  document.getElementById('mf-success-email').textContent = mfData.email;
+})
+.catch(err => {
+  console.error(err);
+
+  document.getElementById('mf-steps').style.display = 'none';
+  document.getElementById('mf-error').style.display = 'block';
+  btn.textContent = 'Send with love ♡';
+  btn.disabled = false;
+});
+
     };
 
   })();
