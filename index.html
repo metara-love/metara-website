@@ -1145,9 +1145,18 @@
 
       <!-- ERROR STATE -->
       <div id="mf-error" style="display:none;text-align:center;padding:2.5rem 2rem;border:1px solid rgba(192,57,43,0.4);background:rgba(192,57,43,0.06);">
-        <p style="color:#e08a82;font-size:0.92rem;margin-bottom:1rem;">Something went wrong sending your message. Please try again, or write to us directly.</p>
+        <p id="mf-error-headline" style="color:#e08a82;font-size:0.95rem;margin-bottom:0.6rem;font-weight:500;">Something went wrong sending your message.</p>
+        <p id="mf-error-explain" style="color:var(--muted);font-size:0.85rem;line-height:1.6;margin-bottom:1.2rem;max-width:440px;margin-left:auto;margin-right:auto;">Please try again, or write to us directly.</p>
         <a href="mailto:love@metara.co.za" style="color:var(--gold);text-decoration:none;">love@metara.co.za</a>
-        <div style="margin-top:1.2rem;">
+
+        <div style="margin-top:1.4rem;">
+          <button type="button" onclick="mfToggleErrorDetails()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;letter-spacing:0.08em;text-decoration:underline;cursor:pointer;opacity:0.7;">
+            <span id="mf-error-details-label">Show technical details</span>
+          </button>
+        </div>
+        <div id="mf-error-details" style="display:none;margin-top:1rem;text-align:left;background:var(--deep);border:1px solid var(--border);padding:1rem 1.2rem;font-family:'Courier New',monospace;font-size:0.72rem;color:var(--muted);line-height:1.6;max-width:480px;margin-left:auto;margin-right:auto;word-break:break-word;white-space:pre-wrap;"></div>
+
+        <div style="margin-top:1.4rem;">
           <button type="button" class="form-btn-ghost" onclick="document.getElementById('mf-error').style.display='none';document.getElementById('mf-steps').style.display='block';">← Back to form</button>
         </div>
       </div>
@@ -1647,42 +1656,94 @@
       btn.disabled = true;
 
       // ── SUBMIT TO CLOUDFLARE WORKER ──
-      // Replace this URL with your deployed Worker endpoint (see backend guide)
       const ENDPOINT = 'https://api.metara.co.za';
 
       fetch(ENDPOINT, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(payload)
-})
-.then(async res => {
-  console.log("HTTP status:", res.status);
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(async res => {
+        const text = await res.text();
+        let parsed = null;
+        try { parsed = JSON.parse(text); } catch (e) { /* not JSON — e.g. an HTML challenge page */ }
 
-  const text = await res.text();
-  console.log("Response body:", text);
+        if (!res.ok) {
+          throw { category: 'server', status: res.status, body: text, parsed };
+        }
+        if (!parsed) {
+          // Got a 200 but not valid JSON — something upstream altered the response
+          throw { category: 'unexpected', status: res.status, body: text, parsed: null };
+        }
+        return parsed;
+      })
+      .then(() => {
+        document.getElementById('mf-steps').style.display = 'none';
+        document.getElementById('mf-progress').style.display = 'none';
+        document.getElementById('mf-success').style.display = 'block';
+        document.getElementById('mf-success-name').textContent = mfData.name.split(' ')[0];
+        document.getElementById('mf-success-email').textContent = mfData.email;
+      })
+      .catch(err => {
+        // Network-level failure (fetch itself threw) vs. server-level failure (we threw above)
+        const isNetworkFailure = err instanceof TypeError;
+        const info = isNetworkFailure
+          ? { category: 'network', status: null, body: String(err && err.message || err) }
+          : err;
 
-  if (!res.ok) {
-    throw new Error(text);
-  }
+        mfShowError(info);
 
-  return JSON.parse(text);
-})
-.then(() => {
-  document.getElementById('mf-steps').style.display = 'none';
-  document.getElementById('mf-progress').style.display = 'none';
-  document.getElementById('mf-success').style.display = 'block';
-  document.getElementById('mf-success-name').textContent = mfData.name.split(' ')[0];
-  document.getElementById('mf-success-email').textContent = mfData.email;
-})
-.catch(err => {
-  console.error(err);
+        document.getElementById('mf-steps').style.display = 'none';
+        document.getElementById('mf-error').style.display = 'block';
+        btn.textContent = 'Send with love ♡';
+        btn.disabled = false;
+      });
 
-  document.getElementById('mf-steps').style.display = 'none';
-  document.getElementById('mf-error').style.display = 'block';
-  btn.textContent = 'Send with love ♡';
-  btn.disabled = false;
-});
+    };
 
+    // ── ERROR DISPLAY ──
+    function mfShowError(info) {
+      const headline = document.getElementById('mf-error-headline');
+      const explain = document.getElementById('mf-error-explain');
+      const details = document.getElementById('mf-error-details');
+
+      if (info.category === 'network') {
+        headline.textContent = "Your message couldn't reach us.";
+        explain.textContent = "This is usually your connection, or a privacy/ad-blocking feature in your browser (like Brave Shields) blocking the request. Try switching networks, briefly disabling browser shields for this site, or email us directly below.";
+      } else if (info.category === 'unexpected') {
+        headline.textContent = "We got an unexpected response.";
+        explain.textContent = "Your message may not have been delivered. This can happen if a security check intercepted the request before it reached us. Please try again in a moment, or email us directly.";
+      } else if (info.status === 429) {
+        headline.textContent = "Too many messages sent recently.";
+        explain.textContent = "Please wait a little while before trying again, or email us directly.";
+      } else if (info.status >= 500) {
+        headline.textContent = "Something went wrong on our end.";
+        explain.textContent = "This isn't your fault — our server had trouble processing your message. Please try again shortly, or email us directly and we'll follow up personally.";
+      } else if (info.status >= 400) {
+        headline.textContent = "We couldn't process your message.";
+        explain.textContent = "Please check your details and try again, or email us directly.";
+      } else {
+        headline.textContent = "Something went wrong sending your message.";
+        explain.textContent = "Please try again, or write to us directly.";
+      }
+
+      // populate technical details panel (hidden by default, self-service for troubleshooting)
+      const lines = [
+        `Time: ${new Date().toISOString()}`,
+        `Category: ${info.category || 'server'}`,
+        info.status ? `HTTP status: ${info.status}` : null,
+        `Browser: ${navigator.userAgent}`,
+        info.body ? `Response: ${String(info.body).slice(0, 500)}` : null,
+      ].filter(Boolean);
+      details.textContent = lines.join('\n');
+    }
+
+    window.mfToggleErrorDetails = function() {
+      const details = document.getElementById('mf-error-details');
+      const label = document.getElementById('mf-error-details-label');
+      const showing = details.style.display === 'block';
+      details.style.display = showing ? 'none' : 'block';
+      label.textContent = showing ? 'Show technical details' : 'Hide technical details';
     };
 
   })();

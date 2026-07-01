@@ -6,17 +6,27 @@
  * Requires: RESEND_API_KEY secret, and TO_EMAIL / FROM_EMAIL vars (see wrangler.toml)
  */
 const ENABLE_RATE_LIMIT = false;
-const ALLOWED_ORIGIN = 'https://metara.co.za'; // update if using www. or different domain
+const ALLOWED_ORIGINS = [
+  'https://metara.co.za',
+  'https://www.metara.co.za',
+]; // add any preview/staging URLs here too if needed
+
+function resolveOrigin(request) {
+  const origin = request.headers.get('Origin');
+  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+}
 
 export default {
   async fetch(request, env, ctx) {
+    const resolvedOrigin = resolveOrigin(request);
+
     // ── CORS PREFLIGHT ──
     if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders() });
+      return new Response(null, { headers: corsHeaders(resolvedOrigin) });
     }
 
     if (request.method !== 'POST') {
-      return jsonResponse({ error: 'Method not allowed' }, 405);
+      return jsonResponse({ error: 'Method not allowed' }, 405, resolvedOrigin);
     }
 
     // ── PARSE & VALIDATE ──
@@ -24,18 +34,18 @@ export default {
     try {
       payload = await request.json();
     } catch (e) {
-      return jsonResponse({ error: 'Invalid JSON' }, 400);
+      return jsonResponse({ error: 'Invalid JSON' }, 400, resolvedOrigin);
     }
 
     const { intent, name, email, location, fields, wantsWhatsapp, whatsappPhone } = payload;
 
     if (!intent || !name || !email || !fields) {
-      return jsonResponse({ error: 'Missing required fields' }, 400);
+      return jsonResponse({ error: 'Missing required fields' }, 400, resolvedOrigin);
     }
 
     // basic email format check
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return jsonResponse({ error: 'Invalid email address' }, 400);
+      return jsonResponse({ error: 'Invalid email address' }, 400, resolvedOrigin);
     }
 
     // ── RATE LIMITING (simple IP-based, using Cloudflare KV) ──
@@ -44,7 +54,7 @@ export default {
       const rateLimitKey = `rl:${clientIP}`;
       const recent = await env.RATE_LIMIT_KV.get(rateLimitKey);
       if (recent && parseInt(recent) >= 100) {
-        return jsonResponse({ error: 'Too many submissions. Please try again later.' }, 429);
+        return jsonResponse({ error: 'Too many submissions. Please try again later.' }, 429, resolvedOrigin);
       }
       const count = recent ? parseInt(recent) + 1 : 1;
       await env.RATE_LIMIT_KV.put(rateLimitKey, String(count), { expirationTtl: 3600 }); // 1 hour window
@@ -126,35 +136,36 @@ export default {
         const errBody = await resendRes.text();
         console.error('Resend error:', errBody);
         console.error("Returning 502 to browser");
-        return jsonResponse({ error: 'Failed to send email' }, 502);
+        return jsonResponse({ error: 'Failed to send email', detail: errBody }, 502, resolvedOrigin);
       }
 
     } catch (err) {
       console.error('Worker error:', err);
-      return jsonResponse({ error: 'Internal error' }, 500);
+      return jsonResponse({ error: 'Internal error', detail: String(err) }, 500, resolvedOrigin);
     }
 	console.log("Returning success to browser");
-    return jsonResponse({ success: true });
+    return jsonResponse({ success: true }, 200, resolvedOrigin);
   },
 };
 
 // ── HELPERS ──
 
-function corsHeaders() {
+function corsHeaders(origin) {
   return {
-    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
+    'Access-Control-Allow-Origin': origin || ALLOWED_ORIGINS[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
+    'Vary': 'Origin',
   };
 }
 
-function jsonResponse(data, status = 200) {
+function jsonResponse(data, status = 200, origin) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
-      ...corsHeaders(),
+      ...corsHeaders(origin),
     },
   });
 }
