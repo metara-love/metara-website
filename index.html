@@ -30,7 +30,9 @@
     --logo-stroke: #d4b87e;
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
+
+  svg, img { max-width: 100%; }
 
   body {
     background: var(--deep);
@@ -104,7 +106,7 @@
   }
   nav .nav-logo {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem; font-weight: 600; letter-spacing: 0.2em;
+    font-size: 1.3rem; font-weight: 400; letter-spacing: 0.2em;
     color: var(--gold); text-decoration: none;
     display: inline-flex; align-items: center; gap: 0.6rem;
   }
@@ -762,7 +764,6 @@
       <circle cx="48" cy="56" r="1.4" fill="var(--logo-stroke, #d4b87e)" opacity="0.65"/>
     </svg>
     </div>
-</div>
     <p class="hero-eyebrow">Plettenberg Bay · South Africa</p>
     <h1>Regenerative systems<br>for a <em>thriving world</em></h1>
     <p class="hero-sub">METARA pioneers practical pathways toward regenerative living — connecting communities, circulating resources, and designing systems that produce more than they consume.</p>
@@ -1042,9 +1043,12 @@
       </div>
     </div>
 
-    <p style="text-align:center; font-size:0.78rem; color:var(--muted); opacity:0.75; margin-top:2.5rem; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.7;">
-      This roadmap, and the incubation arrangement itself, will have its own dedicated page as the Cooperative takes shape. For now, reach out via the form below and mention the Cooperative — we'll guide you from there.
+    <p style="text-align:center; font-size:0.78rem; color:var(--muted); opacity:0.75; margin-top:2.5rem;">
+      This roadmap, and the incubation arrangement itself, will have its own dedicated page as the Cooperative takes shape.
     </p>
+    <div style="text-align:center; margin-top:1.5rem;">
+      <a class="btn" href="#connect" onclick="mfJumpToCooperative()">Become a member of the Cooperative</a>
+    </div>
   </section>
 
   <!-- CIRCULAR ECONOMY -->
@@ -1294,6 +1298,19 @@
       mfState.intent = intent;
       mfData.intent = MF_INTENTS[intent].label;
       setTimeout(() => mfBuildSteps(intent), 200);
+    };
+
+    // Jump straight to the form with Onboarding pre-selected, and the
+    // "Cooperative member" option pre-ticked — used by the Cooperative section CTA.
+    window.mfJumpToCooperative = function() {
+      mfSelectIntent('onboarding');
+      setTimeout(() => {
+        const chip = document.querySelector('#mf-who .chip[data-val="cooperative"]');
+        if (chip) {
+          document.querySelectorAll('#mf-who .chip').forEach(c => c.classList.remove('selected'));
+          chip.classList.add('selected');
+        }
+      }, 260);
     };
 
     // ── BUILD STEPS: [contact info] -> [contextual fields] ──
