@@ -18,5 +18,5 @@ id = "00ccfdcc259d4ec1851c4f85b376ef19"
 # wrangler secret put RESEND_API_KEY
 
 [[routes]]
-pattern = "api.metara.co.za"
+pattern = "contact.metara.co.za"
 custom_domain = true
