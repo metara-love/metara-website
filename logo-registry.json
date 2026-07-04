@@ -1,0 +1,104 @@
+{
+  "_comment": "METARA logo database. Layer 0 = universal marks used regardless of venture. Layer 1 = category families (Nonprofit, Commercial, Social Enterprise, Cooperative). Layer 2 = individual venture marks nested under a family. Update this file whenever a logo is added, renamed, or reassigned.",
+
+  "layers": {
+    "0": "Universal METARA marks",
+    "1": "Category families",
+    "2": "Individual venture marks"
+  },
+
+  "logos": [
+    {
+      "id": "core-cosmic-egg",
+      "name": "Cosmic Egg (hero emblem)",
+      "layer": 0,
+      "venture": null,
+      "status": "final",
+      "location": "index.html, .hero-logo (inline <svg class=\"hero-logo-svg\">)",
+      "description": "Hero emblem: core mark + Merkaba (two interlocking tetrahedra, hidden-line-removed) + orbiting Platonic solids ring (synchronized radial-axis rotation, 24 precomputed keyframes/solid) + arced METARA wordmark (live text, Cormorant Garamond).",
+      "colors": ["var(--logo-stroke)", "var(--logo-c1)", "var(--logo-c2)", "var(--logo-c3)", "var(--glow)"],
+      "notes": "Rotation frame data lives in the inline <script> at the end of index.html. No runtime geometry computation -- all keyframes precomputed."
+    },
+    {
+      "id": "core-metara-mark",
+      "name": "METARA core mark (two-square / eight-point star)",
+      "layer": 0,
+      "venture": null,
+      "status": "final",
+      "location": "index.html, embedded inside both .hero-logo-svg and .nav-logo-mark svg",
+      "description": "The universal blue/cream/orange eight-point star mark with spoke-and-circle decoration, extracted as true vector paths from logo-metara-v3.ai. Identical across all venture logo variants in the .ai file -- confirmed as the Layer 0 anchor mark.",
+      "colors": ["rgb(34.5%,44.7%,56.9%) blue", "rgb(94.9%,87.5%,73.3%) cream", "rgb(95.7%,63.5%,34.9%) orange", "rgb(9.4%,22.7%,16.5%) dark green outline"],
+      "source_file": "logo-metara-v3.ai"
+    },
+    {
+      "id": "nav-metara-mark",
+      "name": "METARA menu/nav logo",
+      "layer": 0,
+      "venture": null,
+      "status": "final",
+      "location": "index.html, .nav-logo-mark svg#metara-mark-nav",
+      "description": "Standalone nav-bar version of core-metara-mark, tightly cropped, no surrounding ring geometry.",
+      "derived_from": "core-metara-mark"
+    },
+    {
+      "id": "nonprofit-unconditional-love-school",
+      "name": "Unconditional Love School",
+      "layer": null,
+      "venture": "Unconditional Love School",
+      "status": "extracted, category unassigned",
+      "location": "not yet placed on site",
+      "source_file": "logo-metara-v3.ai (page 1)",
+      "notes": "Uses core-metara-mark + pale-teal Platonic solid corner icons + arc text 'METARA' / 'UNCONDITIONAL LOVE SCHOOL'. Category layer (Nonprofit / Commercial / Social Enterprise / Cooperative) to be confirmed."
+    },
+    {
+      "id": "sacred-healing-sanctuary",
+      "name": "Sacred Healing Sanctuary",
+      "layer": null,
+      "venture": "Sacred Healing Sanctuary",
+      "status": "extracted, category unassigned",
+      "location": "not yet placed on site",
+      "source_file": "logo-metara-v3.ai (page 2)",
+      "notes": "Pill-shaped lockup, cream palette, eye + leaf motif. Category to be confirmed."
+    },
+    {
+      "id": "birthing-new-humanity",
+      "name": "Birthing New Humanity",
+      "layer": null,
+      "venture": "Birthing New Humanity",
+      "status": "extracted, category unassigned",
+      "location": "not yet placed on site",
+      "source_file": "logo-metara-v3.ai (page 3)",
+      "notes": "Pink Platonic solid corner icons. Category to be confirmed."
+    },
+    {
+      "id": "metara-menu-logo-variant",
+      "name": "METARA Menu Logo (alternate arched lockup)",
+      "layer": null,
+      "venture": null,
+      "status": "extracted, superseded by nav-metara-mark",
+      "location": "not on site",
+      "source_file": "logo-metara-v3.ai (page 4)",
+      "notes": "Arched/dome framing of the core mark with sunburst accents. Kept for reference; nav-metara-mark was used for the live nav bar instead."
+    },
+    {
+      "id": "holistic-lifestyle",
+      "name": "Holistic Lifestyle",
+      "layer": null,
+      "venture": "Holistic Lifestyle",
+      "status": "extracted, category unassigned",
+      "location": "not yet placed on site",
+      "source_file": "logo-metara-v3.ai (page 5)",
+      "notes": "Mirrored double-mark with 'EST 2021' and 'HOLISTIC LIFESTYLE' arc text, pale-gold solids. Category to be confirmed."
+    },
+    {
+      "id": "galaxy-logo-reference",
+      "name": "METARA Galaxy Logo",
+      "layer": null,
+      "venture": null,
+      "status": "reference only -- not production-usable",
+      "location": "not on site",
+      "source_file": "METARA_Galaxy_Logo.jpg (AI-generated, ReLogo.AI watermarked)",
+      "notes": "Raster/photographic nebula style, visibly watermarked, and a different visual language (painterly glow vs. flat gold wireframe) from the rest of the site. Kept only as a mood/compositional reference for the cosmic-egg icon ring layout."
+    }
+  ]
+}
