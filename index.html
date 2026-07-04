@@ -458,7 +458,9 @@
     .pillar-inner { transition: none; }
   }
 </style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
+
 <body>
 
 <div class="stars"></div>
@@ -1138,6 +1140,19 @@
 
     // ── STATE ──
     let mfState = { intent:null, step:0 };
+    let mfTurnstileToken = null;
+
+    window.mfTurnstileSuccess = function(token) {
+      mfTurnstileToken = token;
+      const btn = document.getElementById('mf-submit-btn');
+      if (btn) btn.disabled = false;
+    };
+
+    window.mfTurnstileExpired = function() {
+      mfTurnstileToken = null;
+      const btn = document.getElementById('mf-submit-btn');
+      if (btn) btn.disabled = true;
+    };
     const mfData = {};
 
     // ── INTENT SELECTION ──
@@ -1227,9 +1242,12 @@
         fieldsHtml += `</div>`;
       });
       fieldsHtml += `
-        <div style="display:flex;gap:1rem;margin-top:2rem;justify-content:center;">
+        <div style="display:flex;justify-content:center;margin-top:1.5rem;">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADvqbarSWTfECJDq" data-callback="mfTurnstileSuccess" data-expired-callback="mfTurnstileExpired"></div>
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:1.5rem;justify-content:center;">
           <button type="button" class="form-btn-ghost" onclick="mfShowStep(1)">← Back</button>
-          <button type="button" class="form-btn" id="mf-submit-btn" onclick="mfSubmit()">Send with love ♡</button>
+          <button type="button" class="form-btn" id="mf-submit-btn" onclick="mfSubmit()" disabled>Send with love ♡</button>
         </div>
       `;
       step2.innerHTML = fieldsHtml;
@@ -1324,6 +1342,7 @@
         location: mfData.location || '',
         wantsWhatsapp: mfData.wantsWhatsapp || false,
         whatsappPhone: mfData.whatsappPhone || '',
+        turnstileToken: mfTurnstileToken,
         fields: {}
       };
 
@@ -1349,12 +1368,18 @@
 
       if (!valid) return;
 
+      if (!mfTurnstileToken) {
+        mfShowError({ category: 'validation', status: null, body: 'Please complete the verification check above.' });
+        document.getElementById('mf-error').style.display = 'block';
+        return;
+      }
+
       const btn = document.getElementById('mf-submit-btn');
       btn.textContent = 'Sending…';
       btn.disabled = true;
 
       // ── SUBMIT TO CLOUDFLARE WORKER ──
-      const ENDPOINT = 'https://contact.metara.co.za';
+      const ENDPOINT = 'https://contact.metara.co.za'; // live Worker endpoint — leave as-is; api.metara.co.za isn't wired up yet
 
       fetch(ENDPOINT, {
         method: 'POST',
@@ -1391,10 +1416,14 @@
 
         mfShowError(info);
 
+        // Turnstile tokens are single-use — reset so the person can retry
+        mfTurnstileToken = null;
+        if (window.turnstile) window.turnstile.reset();
+
         document.getElementById('mf-steps').style.display = 'none';
         document.getElementById('mf-error').style.display = 'block';
         btn.textContent = 'Send with love ♡';
-        btn.disabled = false;
+        btn.disabled = true;
       });
 
     };

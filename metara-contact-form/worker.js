@@ -5,7 +5,7 @@
  * Deploy with: wrangler deploy
  * Requires: RESEND_API_KEY secret, and TO_EMAIL / FROM_EMAIL vars (see wrangler.toml)
  */
-const ENABLE_RATE_LIMIT = false;
+const ENABLE_RATE_LIMIT = true; // requires RATE_LIMIT_KV binding in wrangler.toml — safe no-op if not bound
 const ALLOWED_ORIGINS = [
   'https://metara.co.za',
   'https://www.metara.co.za',
@@ -37,7 +37,7 @@ export default {
       return jsonResponse({ error: 'Invalid JSON' }, 400, resolvedOrigin);
     }
 
-    const { intent, name, email, location, fields, wantsWhatsapp, whatsappPhone } = payload;
+    const { intent, name, email, location, fields, wantsWhatsapp, whatsappPhone, turnstileToken } = payload;
 
     if (!intent || !name || !email || !fields) {
       return jsonResponse({ error: 'Missing required fields' }, 400, resolvedOrigin);
@@ -46,6 +46,41 @@ export default {
     // basic email format check
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return jsonResponse({ error: 'Invalid email address' }, 400, resolvedOrigin);
+    }
+
+    // basic length caps — cheap defense against abuse/oversized payloads
+    if (name.length > 200 || email.length > 200 || (location && location.length > 200)) {
+      return jsonResponse({ error: 'Input too long' }, 400, resolvedOrigin);
+    }
+    const fieldsTotalLength = Object.values(fields).reduce((sum, v) => sum + (v ? String(v).length : 0), 0);
+    if (fieldsTotalLength > 10000) {
+      return jsonResponse({ error: 'Input too long' }, 400, resolvedOrigin);
+    }
+
+    // ── TURNSTILE VERIFICATION ──
+    if (!turnstileToken) {
+      return jsonResponse({ error: 'Verification required' }, 400, resolvedOrigin);
+    }
+    const clientIPForTurnstile = request.headers.get('CF-Connecting-IP') || '';
+    try {
+      const tsForm = new FormData();
+      tsForm.append('secret', env.TURNSTILE_SECRET_KEY);
+      tsForm.append('response', turnstileToken);
+      if (clientIPForTurnstile) tsForm.append('remoteip', clientIPForTurnstile);
+
+      const tsRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        body: tsForm,
+      });
+      const tsData = await tsRes.json();
+
+      if (!tsData.success) {
+        console.error('Turnstile verification failed:', JSON.stringify(tsData['error-codes'] || []));
+        return jsonResponse({ error: 'Verification failed. Please try again.' }, 403, resolvedOrigin);
+      }
+    } catch (err) {
+      console.error('Turnstile verification error:', err);
+      return jsonResponse({ error: 'Verification failed. Please try again.' }, 502, resolvedOrigin);
     }
 
     // ── RATE LIMITING (simple IP-based, using Cloudflare KV) ──
@@ -135,13 +170,12 @@ export default {
       if (!resendRes.ok) {
         const errBody = await resendRes.text();
         console.error('Resend error:', errBody);
-        console.error("Returning 502 to browser");
-        return jsonResponse({ error: 'Failed to send email', detail: errBody }, 502, resolvedOrigin);
+        return jsonResponse({ error: 'Failed to send email. Please try again shortly.' }, 502, resolvedOrigin);
       }
 
     } catch (err) {
       console.error('Worker error:', err);
-      return jsonResponse({ error: 'Internal error', detail: String(err) }, 500, resolvedOrigin);
+      return jsonResponse({ error: 'Something went wrong. Please try again shortly.' }, 500, resolvedOrigin);
     }
 	console.log("Returning success to browser");
     return jsonResponse({ success: true }, 200, resolvedOrigin);
