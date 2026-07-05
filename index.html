@@ -1141,6 +1141,7 @@
     // ── STATE ──
     let mfState = { intent:null, step:0 };
     let mfTurnstileToken = null;
+    let mfTurnstileWidgetId = null;
 
     window.mfTurnstileSuccess = function(token) {
       mfTurnstileToken = token;
@@ -1153,6 +1154,33 @@
       const btn = document.getElementById('mf-submit-btn');
       if (btn) btn.disabled = true;
     };
+
+    function mfRenderTurnstile(retries) {
+      retries = retries || 0;
+      const container = document.getElementById('mf-turnstile-container');
+      if (!container) return; // step not showing right now, nothing to do
+
+      if (typeof window.turnstile === 'undefined') {
+        // api.js hasn't finished loading yet — retry briefly rather than giving up
+        if (retries < 40) { // ~10s max wait
+          setTimeout(() => mfRenderTurnstile(retries + 1), 250);
+        } else {
+          console.error('Turnstile failed to load after waiting — check network/CSP.');
+        }
+        return;
+      }
+
+      // Reset token/button state for a fresh render
+      mfTurnstileToken = null;
+      const btn = document.getElementById('mf-submit-btn');
+      if (btn) btn.disabled = true;
+
+      mfTurnstileWidgetId = window.turnstile.render(container, {
+        sitekey: '0x4AAAAAADvqbarSWTfECJDq',
+        callback: window.mfTurnstileSuccess,
+        'expired-callback': window.mfTurnstileExpired,
+      });
+    }
     const mfData = {};
 
     // ── INTENT SELECTION ──
@@ -1243,7 +1271,7 @@
       });
       fieldsHtml += `
         <div style="display:flex;justify-content:center;margin-top:1.5rem;">
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADvqbarSWTfECJDq" data-callback="mfTurnstileSuccess" data-expired-callback="mfTurnstileExpired"></div>
+          <div id="mf-turnstile-container"></div>
         </div>
         <div style="display:flex;gap:1rem;margin-top:1.5rem;justify-content:center;">
           <button type="button" class="form-btn-ghost" onclick="mfShowStep(1)">← Back</button>
@@ -1252,6 +1280,7 @@
       `;
       step2.innerHTML = fieldsHtml;
       stepsEl.appendChild(step2);
+      mfRenderTurnstile();
 
       // wire up chip clicks for step 2
       cfg.fields.filter(f => f.type === 'chips' || f.type === 'chips-multi').forEach(f => {
@@ -1418,7 +1447,7 @@
 
         // Turnstile tokens are single-use — reset so the person can retry
         mfTurnstileToken = null;
-        if (window.turnstile) window.turnstile.reset();
+        if (window.turnstile && mfTurnstileWidgetId !== null) window.turnstile.reset(mfTurnstileWidgetId);
 
         document.getElementById('mf-steps').style.display = 'none';
         document.getElementById('mf-error').style.display = 'block';
