@@ -334,7 +334,13 @@
     font-size: 1.15rem; font-weight: 400; color: var(--text);
   }
   .ventures p { font-size: 0.9rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; }
-  .venture-logo { display: block; height: 84px; width: auto; margin: 0 auto 0.8rem; }
+  .venture-logo-wrap {
+    width: 130px; height: 130px; margin: 0 auto 0.8rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.86) 52%, rgba(255,255,255,0.31) 68%, rgba(255,255,255,0) 80%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .venture-logo { display: block; height: 84px; width: auto; margin: 0; }
 
   /* ── HOW IT WORKS ── */
   .cycle {
@@ -727,13 +733,13 @@
 
     <ul class="ventures" style="margin-top: 2.5rem;">
       <li>
-        <img class="venture-logo" src="/logos/holistic-lifestyle.svg" alt="METARA Living Solutions logo" loading="lazy">
+        <div class="venture-logo-wrap"><img class="venture-logo" src="/logos/holistic-lifestyle.svg" alt="METARA Living Solutions logo" loading="lazy"></div>
         <span class="venture-status venture-status--active">Growing</span>
         <h4>METARA Living Solutions</h4>
         <p>The commercial engine — financially sustainable businesses that solve real-world problems while generating the resources that power the wider ecosystem.</p>
       </li>
       <li>
-        <img class="venture-logo" src="/logos/birthing-new-humanity.svg" alt="METARA Collaboration &amp; Eco Solutions logo" loading="lazy">
+        <div class="venture-logo-wrap"><img class="venture-logo" src="/logos/birthing-new-humanity.svg" alt="METARA Collaboration &amp; Eco Solutions logo" loading="lazy"></div>
         <span class="venture-status venture-status--active">Growing — Pilot Phase</span>
         <h4>METARA Collaboration &amp; Eco Solutions</h4>
         <p>A local circular economy platform connecting independent businesses in Plettenberg Bay into a mutually beneficial network — turning waste into resource, reducing costs, and building community.</p>
@@ -744,19 +750,19 @@
         <p>The coordinating structure — a community-owned body that governs resource flows, issues Resource Credits for regenerative contributions, and distributes value across the ecosystem.</p>
       </li>
       <li>
-        <img class="venture-logo" src="/logos/sacred-healing-sanctuary.svg" alt="METARA Holistic Retreat Centre logo" loading="lazy">
+        <div class="venture-logo-wrap"><img class="venture-logo" src="/logos/sacred-healing-sanctuary.svg" alt="METARA Holistic Retreat Centre logo" loading="lazy"></div>
         <span class="venture-status venture-status--seed">Seed · Awaiting Fertile Ground</span>
         <h4>METARA Holistic Retreat Centre</h4>
         <p>A sanctuary for deep rest, healing and purpose — a self-sufficient community model rooted in regenerative abundance, nature connection, and holistic wellbeing.</p>
       </li>
       <li>
-        <img class="venture-logo" src="/logos/metara-menu-logo-variant.svg" alt="METARA Collective NPO logo" loading="lazy">
+        <div class="venture-logo-wrap"><img class="venture-logo" src="/logos/metara-menu-logo-variant.svg" alt="METARA Collective NPO logo" loading="lazy"></div>
         <span class="venture-status venture-status--seed">Seed · Awaiting Fertile Ground</span>
         <h4>METARA Collective NPO</h4>
         <p>The social layer — supporting education, ecological restoration, community projects, and care initiatives. The foundation that ensures value reaches communities and nature.</p>
       </li>
       <li>
-        <img class="venture-logo" src="/logos/unconditional-love-school.svg" alt="METARA Unconditional Love School logo" loading="lazy">
+        <div class="venture-logo-wrap"><img class="venture-logo" src="/logos/unconditional-love-school.svg" alt="METARA Unconditional Love School logo" loading="lazy"></div>
         <span class="venture-status venture-status--active">Growing</span>
         <h4>METARA Unconditional Love School</h4>
         <p>Education rooted in the deepest principles of human connection, cooperation, and conscious living. Established 2021.</p>
