@@ -1,12 +1,10 @@
 {
   "_comment": "METARA logo database. Layer 0 = universal marks used regardless of venture. Layer 1 = category families (Nonprofit, Commercial, Social Enterprise, Cooperative). Layer 2 = individual venture marks nested under a family. Update this file whenever a logo is added, renamed, or reassigned.",
-
   "layers": {
     "0": "Universal METARA marks",
     "1": "Category families",
     "2": "Individual venture marks"
   },
-
   "logos": [
     {
       "id": "core-cosmic-egg",
@@ -15,9 +13,15 @@
       "venture": null,
       "status": "final",
       "location": "index.html, .hero-logo (inline <svg class=\"hero-logo-svg\">)",
-      "description": "Hero emblem: core mark + Merkaba (two interlocking tetrahedra, hidden-line-removed) + orbiting Platonic solids ring (synchronized radial-axis rotation, 24 precomputed keyframes/solid) + arced METARA wordmark (live text, Cormorant Garamond).",
-      "colors": ["var(--logo-stroke)", "var(--logo-c1)", "var(--logo-c2)", "var(--logo-c3)", "var(--glow)"],
-      "notes": "Rotation frame data lives in the inline <script> at the end of index.html. No runtime geometry computation -- all keyframes precomputed."
+      "description": "Hero emblem: core mark + Merkaba (two interlocking tetrahedra, shaded) + orbiting Platonic solids ring (synchronized radial-axis rotation, 24 precomputed keyframes/solid) + arced METARA wordmark (live text, Philosopher font).",
+      "colors": [
+        "var(--logo-stroke)",
+        "var(--logo-c1)",
+        "var(--logo-c2)",
+        "var(--logo-c3)",
+        "var(--glow)"
+      ],
+      "notes": "Rotation frame data lives in the inline <script> at the end of index.html. No runtime geometry computation -- all keyframes precomputed. Updated 2026-08 (second pass): the halo/atom/seed-of-life/merkaba/mark portion of the hero SVG was replaced wholesale with the actual content of 'logo for website/Cosmic Egg/merkaba-shaded-behind-mark.svg' (the real designer source, superseding an earlier hand-approximated gradient version). SVG ids namespaced with an 'egg-' prefix. The Platonic-solids ring group (ids solid-tetra/cube/octa/dodeca/icosa, used by the rotation JS) was left untouched, as confirmed unchanged by Phiji. The arc-text font-size was bumped from 19 to 21 to reflect Phiji's 'slightly larger' adjustment -- the reference SVG doesn't contain the arc text itself (it's added live via CSS/textPath, same as before), so this value is an estimate; flag if it needs fine-tuning."
     },
     {
       "id": "core-metara-mark",
@@ -25,9 +29,14 @@
       "layer": 0,
       "venture": null,
       "status": "final",
-      "location": "index.html, embedded inside both .hero-logo-svg and .nav-logo-mark svg, and reused as the shared foundation of every venture logo below",
+      "location": "index.html, embedded inside .hero-logo-svg, .nav-logo-mark svg, and reused as the shared foundation of every venture logo below",
       "description": "The universal blue/cream/orange eight-point star mark with spoke-and-circle decoration, extracted as true vector paths from logo-metara-v3.ai. Identical across all venture logo variants -- confirmed as the Layer 0 anchor mark.",
-      "colors": ["#587291 blue (--logo-c1)", "#f2dfbb cream (--logo-c2)", "#f4a259 orange (--logo-c3)", "#183a2a dark green outline"],
+      "colors": [
+        "#587291 blue (--logo-c1)",
+        "#f2dfbb cream (--logo-c2)",
+        "#f4a259 orange (--logo-c3)",
+        "#183a2a dark green outline"
+      ],
       "source_file": "logo-metara-v3.ai"
     },
     {
@@ -35,10 +44,25 @@
       "name": "METARA menu/nav logo",
       "layer": 0,
       "venture": null,
-      "status": "final",
-      "location": "index.html, .nav-logo-mark svg#metara-mark-nav",
+      "status": "superseded",
+      "location": "not on site",
       "description": "Standalone nav-bar version of core-metara-mark, tightly cropped, no surrounding ring geometry.",
-      "derived_from": "core-metara-mark"
+      "derived_from": "core-metara-mark",
+      "notes": "Superseded 2026-08 by 'nav-metara-dome' below (logo-nav-dome-light.svg), now used in the live nav bar. Kept for historical reference."
+    },
+    {
+      "id": "nav-metara-dome",
+      "name": "METARA nav dome logo",
+      "layer": 0,
+      "venture": null,
+      "status": "final",
+      "location": "index.html, .nav-logo-mark svg#metara-nav-dome",
+      "description": "Arched dome frame around the core mark, with small sunburst accents above and below. Replaces the earlier tightly-cropped nav-metara-mark.",
+      "source_files": {
+        "dark": "logo for website/Navigation Icons/logo-nav-dome-dark.svg (for light backgrounds)",
+        "light": "logo for website/Navigation Icons/logo-nav-dome-light.svg (cream stroke, used on site -- dark background)"
+      },
+      "notes": "Integrated 2026-08: SVG ids namespaced with a 'navdome-' prefix. Other Navigation Icons files (logo-nav-mark, logo-nav-text, both dark/light) were supplied alongside this but not yet used on site -- available for future placements. Updated 2026-08: .nav-logo-mark sized to a flat 50px (was briefly 34px, then 51px/+50%, now simplified to 50px per Phiji)."
     },
     {
       "id": "living-solutions",
@@ -49,12 +73,15 @@
       "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Living Solutions logo\"]",
       "site_status_label": "Growing",
       "description": "core-metara-mark + amber/gold Platonic-solid corner icons + arc text 'METARA' / 'LIVING SOLUTIONS'.",
-      "colors": ["#f2c12e amber/gold accent", "plus shared core mark colors"],
+      "colors": [
+        "#f2c12e amber/gold accent",
+        "plus shared core mark colors"
+      ],
       "source_files": {
         "dark": "METARA Living Solutions/logo-living-solutions-dark.svg (for light backgrounds)",
         "light": "METARA Living Solutions/logo-living-solutions-light.svg (cream stroke, used on site -- dark background)"
       },
-      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'living-' prefix to avoid collisions with the other four inlined venture logos on the same page."
+      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'living-' prefix to avoid collisions with the other inlined venture logos on the same page. Re-synced 2026-08 (second pass) from the current source SVGs in the repo's 'logos by venture' folder to confirm all inline copies are up to date."
     },
     {
       "id": "collaboration-eco-solutions",
@@ -63,14 +90,17 @@
       "venture": "Collaboration & Eco Solutions",
       "status": "final",
       "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Collaboration & Eco Solutions logo\"]",
-      "site_status_label": "Growing",
+      "site_status_label": "Growing — Pilot Phase",
       "description": "core-metara-mark + teal Platonic-solid corner icons + arc text 'METARA' / 'COLLABORATIONS'.",
-      "colors": ["#329aa6 teal accent", "plus shared core mark colors"],
+      "colors": [
+        "#329aa6 teal accent",
+        "plus shared core mark colors"
+      ],
       "source_files": {
-        "dark": "METARA Collaborations/text-collaborations-platonics-dark.svg (for light backgrounds)",
-        "light": "METARA Collaborations/text-collaborations-platonics-light.svg (cream stroke, used on site -- dark background)"
+        "dark": "logos by venture/METARA Collaborations/logo-collaborations-dark.svg (renamed from 'text-collaborations-platonics-dark.svg'; for light backgrounds)",
+        "light": "logos by venture/METARA Collaborations/logo-collaborations-light.svg (used on site -- dark background)"
       },
-      "notes": "No earlier placeholder entry existed for this venture in prior registry versions -- first appearance. Integrated v30 (2026-08): SVG ids namespaced with a 'collab-' prefix."
+      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'collab-' prefix. Re-synced 2026-08 (second pass) from the current source SVGs in the repo's 'logos by venture' folder to confirm all inline copies are up to date."
     },
     {
       "id": "holistic-retreat-centre",
@@ -79,14 +109,20 @@
       "venture": "Holistic Retreat Centre",
       "status": "final",
       "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Holistic Retreat Centre logo\"]",
-      "site_status_label": "Growing \u2014 Pilot Phase",
+      "site_status_label": "Seed · Awaiting Fertile Ground",
       "description": "Pill-shaped lockup with eye + leaf/flower motif, deep-green accent circle, core-mark-derived corner icons.",
-      "colors": ["#183a2a deep green accent", "#587291", "#f2c12e", "#f2dfbb", "#f4a259"],
+      "colors": [
+        "#183a2a deep green accent",
+        "#587291",
+        "#f2c12e",
+        "#f2dfbb",
+        "#f4a259"
+      ],
       "source_files": {
-        "dark": "METARA Holistic Retreat Centre/text-healing-eye-dark.svg (for light backgrounds)",
-        "light": "METARA Holistic Retreat Centre/text-healing-eye-light.svg (cream stroke, used on site -- dark background)"
+        "dark": "logos by venture/METARA Holistic Retreat Centre/logo-retreat-centre-dark.svg (renamed from 'text-healing-eye-dark.svg'; for light backgrounds)",
+        "light": "logos by venture/METARA Holistic Retreat Centre/logo-retreat-centre-light.svg (used on site -- dark background)"
       },
-      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'healing-' prefix. Geometry refined between v22 and v30 (flower/eye motif adjusted)."
+      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'healing-' prefix. Geometry refined between v22 and v30 (flower/eye motif adjusted). Re-synced 2026-08 (second pass) from the current source SVGs in the repo's 'logos by venture' folder to confirm all inline copies are up to date."
     },
     {
       "id": "collective-npo",
@@ -95,14 +131,17 @@
       "venture": "Collective",
       "status": "final",
       "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Collective NPO logo\"]",
-      "site_status_label": "Seed \u00b7 Awaiting Fertile Ground",
+      "site_status_label": "Seed · Awaiting Fertile Ground",
       "description": "core-metara-mark + magenta/pink Platonic-solid corner icons + arc text 'METARA' / 'COLLECTIVE'.",
-      "colors": ["#e6007e magenta/pink accent", "plus shared core mark colors"],
+      "colors": [
+        "#e6007e magenta/pink accent",
+        "plus shared core mark colors"
+      ],
       "source_files": {
         "dark": "METARA Collective/logo-collective-dark.svg (for light backgrounds)",
         "light": "METARA Collective/logo-collective-light.svg (cream stroke, used on site -- dark background)"
       },
-      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'collective-' prefix. Unchanged between v22 and v30 (byte-identical source file)."
+      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'collective-' prefix. Unchanged between v22 and v30 (byte-identical source file). Re-synced 2026-08 (second pass) from the current source SVGs in the repo's 'logos by venture' folder to confirm all inline copies are up to date."
     },
     {
       "id": "unconditional-love-school",
@@ -111,34 +150,57 @@
       "venture": "Unconditional Love School",
       "status": "final",
       "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Unconditional Love School logo\"]",
-      "site_status_label": "Seed \u00b7 Awaiting Fertile Ground",
+      "site_status_label": "Growing",
       "description": "core-metara-mark + teal Platonic-solid corner icons + arc text 'METARA' / 'UNCONDITIONAL LOVE SCHOOL'.",
-      "colors": ["#329aa6 teal accent", "plus shared core mark colors"],
+      "colors": [
+        "#329aa6 teal accent",
+        "plus shared core mark colors"
+      ],
       "source_files": {
         "dark": "METARA Unconditional Love School/logo-ucls-dark.svg (for light backgrounds)",
         "light": "METARA Unconditional Love School/logo-ucls-light.svg (cream stroke, used on site -- dark background)"
       },
-      "notes": "Direct successor of the earlier 'nonprofit-unconditional-love-school' extraction (same venture, now finalized with curved arc text and colour palette applied). Integrated v30 (2026-08): SVG ids namespaced with a 'ucls-' prefix. Unchanged between v22 and v30 (byte-identical source file)."
+      "notes": "Integrated v30 (2026-08): SVG ids namespaced with a 'ucls-' prefix. Unchanged between v22 and v30 (byte-identical source file). Re-synced 2026-08 (second pass) from the current source SVGs in the repo's 'logos by venture' folder to confirm all inline copies are up to date."
     },
     {
-      "id": "nonprofit-unconditional-love-school",
-      "name": "Unconditional Love School (early extraction, superseded)",
-      "layer": null,
-      "venture": "Unconditional Love School",
-      "status": "superseded",
-      "location": "not on site",
-      "source_file": "logo-metara-v3.ai (page 1)",
-      "notes": "Superseded by 'unconditional-love-school' above (text + colour palette finalized, now live on site). Kept for historical reference only."
+      "id": "metara-charity",
+      "name": "METARA Charity",
+      "layer": 2,
+      "venture": "Charity",
+      "status": "final",
+      "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Charity logo\"]",
+      "site_status_label": "Seed · Awaiting Fertile Ground",
+      "description": "Pill-shaped lockup (core-metara-mark + copper/amber accent, arc text 'METARA' / 'CHARITY') plus a separate circular stamp-seal design ('Love in Action', dove + heart-hands motif) shown beneath the description on the venture card.",
+      "colors": [
+        "copper/amber accent",
+        "plus shared core mark colors"
+      ],
+      "source_files": {
+        "main_dark": "logos by venture/METARA Charity/logo-charity-dark.svg (renamed by Phiji from the earlier misnamed 'logo-retreat-dark.svg'; for light backgrounds)",
+        "main_light": "logos by venture/METARA Charity/logo-charity-light.svg (renamed from 'logo-retreat-light.svg'; used on site -- dark background)",
+        "stamp_dark": "logos by venture/METARA Charity/Charity Stamp/logo-charity-stamp-dark.svg (for light backgrounds)",
+        "stamp_light": "logos by venture/METARA Charity/Charity Stamp/logo-charity-stamp-light.svg"
+      },
+      "notes": "Added 2026-08. Description per Phiji: 'a charity foundation that raises and distributes funds across METARA's branches; legally distinct from the Collective NPO.' SVG ids namespaced 'charity-' (main logo). Updated 2026-08 (second pass): main logo source files renamed correctly by Phiji (no longer mislabeled 'logo-retreat'), moved into their own 'Charity Stamp' subfolder for the stamp variant. The stamp ('Love in Action' seal) has been REMOVED from the live site for now -- Phiji plans to bring it back once a donate button/flow is built. Stamp SVG files remain in the repo untouched, just not referenced in index.html."
     },
     {
-      "id": "metara-menu-logo-variant",
-      "name": "METARA Menu Logo (alternate arched lockup)",
-      "layer": null,
-      "venture": null,
-      "status": "extracted, superseded by nav-metara-mark",
-      "location": "not on site",
-      "source_file": "logo-metara-v3.ai (page 4)",
-      "notes": "Arched/dome framing of the core mark with sunburst accents. Kept for reference; nav-metara-mark was used for the live nav bar instead."
+      "id": "sacred-birthing-centre",
+      "name": "METARA Sacred Birthing Centre",
+      "layer": 2,
+      "venture": "Sacred Birthing Centre",
+      "status": "final",
+      "location": "index.html, ventures list, .venture-logo-inline-wrap[aria-label=\"METARA Sacred Birthing Centre logo\"]",
+      "site_status_label": "Seed · Awaiting Fertile Ground",
+      "description": "core-metara-mark + grey/silver Platonic-solid corner icons + arc text 'METARA' / 'SACRED BIRTHING CENTRE'.",
+      "colors": [
+        "grey/silver accent",
+        "plus shared core mark colors"
+      ],
+      "source_files": {
+        "dark": "METARA Sacred Birthing Centre/logo-birthing-centre-dark.svg (for light backgrounds)",
+        "light": "METARA Sacred Birthing Centre/logo-birthing-centre-light.svg (used on site -- dark background)"
+      },
+      "notes": "Added 2026-08. First appearance on site -- new venture. Description per Phiji: sits closely alongside the Holistic Retreat Centre; focused on holistic and natural births and supporting infrastructure; content to follow as the venture develops. SVG ids namespaced 'birthing-' prefix. Re-verified 2026-08: logo re-synced from current source file, no visual changes."
     },
     {
       "id": "galaxy-logo-reference",
