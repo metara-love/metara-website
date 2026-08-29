@@ -134,6 +134,27 @@ when actually clicking around in a browser:
       deployment's CSP actually says, not just whether it works when you
       open the file yourself.
 
+  (f) A self-inflicted one, worth recording because it's a direct
+      demonstration of a warning this file already gave: scope_global_
+      selectors() used to convert the standalone source's global
+      "html{scroll-behavior:smooth;}" rule by matching that exact,
+      complete string. When a later fix added overflow-x:hidden to that
+      same rule (see the standalone file's own header notes on the
+      mobile horizontal-scroll bug), the rule's text no longer matched
+      the hardcoded string byte-for-byte, so it slipped through
+      completely unscoped and would have leaked onto the real site's
+      <html> element. find_risky_selectors()'s warning output is what
+      caught it, not a passing test -- it printed a warning rather than
+      failing outright, so it's easy to miss if you don't read this
+      script's stderr output after running it. The fix was to match the
+      SELECTOR via regex (any "html{...}", regardless of contents)
+      instead of the whole rule's exact text. The general lesson, since
+      it applies to every exact-string match in this file, not just this
+      one: matching a full rule's text is fragile to any future edit of
+      that rule's contents; matching by selector and capturing the
+      declarations is not. If you add a new global-selector scoping step
+      here, prefer the regex-capture pattern over a literal string match.
+
 Neither of these would be caught by reading the CSS/HTML -- they only
 show up as a rendered page. Whoever (whatever) is maintaining this next:
 treat "I edited the CSS/JS" and "I confirmed it renders correctly in an
@@ -390,8 +411,21 @@ def scope_global_selectors(css):
 
     css = css.replace('*{box-sizing:border-box;}',
                        '#mt-overlay, #mt-overlay *{box-sizing:border-box;}')
-    css = css.replace('html{scroll-behavior:smooth;}', '#mt-scroll{scroll-behavior:smooth;}')
-    css = css.replace('html{scroll-behavior:auto;}', '#mt-scroll{scroll-behavior:auto;}')
+    # Redirect any html{...} rule to #mt-scroll{...} rather than matching
+    # exact hardcoded rule text. The previous version only replaced the
+    # literal strings 'html{scroll-behavior:smooth;}' and
+    # 'html{scroll-behavior:auto;}' -- when a later edit to the standalone
+    # source changed that rule's content (adding overflow-x:hidden, to fix
+    # a real mobile horizontal-scroll bug), the exact string no longer
+    # matched and the rule slipped through completely unscoped, leaking
+    # onto the real site's <html> element. find_risky_selectors() below
+    # is what caught it -- but a regex that matches the SELECTOR rather
+    # than the whole rule's exact text is what actually prevents it from
+    # recurring. #mt-scroll is the right target regardless of what
+    # html{...} contains: it's the tree's own scrolling container inside
+    # the overlay, playing the same role there that <html> plays in the
+    # standalone page.
+    css = re.sub(r'(?<![\w.#-])html\{([^}]*)\}', r'#mt-scroll{\1}', css)
     css = css.replace(
         "h1,h2,h3,.mt-display{font-family:'Philosopher', serif; font-weight:400; margin:0;}",
         "#mt-overlay h1, #mt-overlay h2, #mt-overlay h3, #mt-overlay .mt-display"

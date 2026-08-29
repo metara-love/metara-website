@@ -436,7 +436,15 @@
   }
 
   /* ── MOBILE ── */
-  @media (max-width: 640px) {
+  /* Switches to the hamburger well before the text nav items start
+     crowding the METARA logo -- confirmed by testing: at 850-900px the
+     text nav ("ABOUT" especially) was already touching the logo, and
+     "CIRCULAR ECONOMY" was wrapping to two lines. This trigger is
+     intentionally separate from the @media (max-width: 640px) block
+     below (which handles general small-screen content spacing) so that
+     tightening this breakpoint further later doesn't accidentally change
+     unrelated mobile padding/font-size rules, and vice versa. */
+  @media (max-width: 960px) {
     .nav-toggle { display: flex; }
     nav ul#nav-menu {
       position: absolute; top: 100%; left: 0; right: 0;
@@ -453,6 +461,9 @@
       border-top: 1px solid rgba(212,184,126,0.08);
     }
     nav ul#nav-menu li:first-child a { border-top: none; }
+  }
+
+  @media (max-width: 640px) {
     section { padding: 4rem 1.2rem; }
     .vision-block { padding: 1.5rem; }
     .contact-box { padding: 2.5rem 1.5rem; }
@@ -521,7 +532,7 @@
     overflow-x:hidden;
   }
   #mt-overlay, #mt-overlay *{box-sizing:border-box;}
-  #mt-scroll{scroll-behavior:smooth;}
+  #mt-scroll{scroll-behavior:smooth; overflow-x:hidden;}
   
   #mt-overlay h1, #mt-overlay h2, #mt-overlay h3, #mt-overlay .mt-display{font-family:'Philosopher', serif; font-weight:400; margin:0;}
   .mt-eyebrow{
@@ -594,14 +605,23 @@
     box-shadow:0 0 7px rgba(212,184,126,0.45);
     transition:transform .08s linear;
   }
+  /* The dot's hit-target (.mt-chapter-dot) and its visible circle (::before)
+     are deliberately separate: on mobile the tap target grows well past
+     what looks like the dot, so it stays reliably tappable without the
+     dot itself growing and becoming a visually heavy blob on a small
+     screen. Desktop keeps them the same size, so nothing changes there. */
   .mt-chapter-dot{
-    position:absolute; left:50%; width:11px; height:11px; border-radius:50%;
-    background:var(--cosmos); border:1.5px solid rgba(245,243,236,0.28);
+    position:absolute; left:50%; width:11px; height:11px;
     transform:translate(-50%,-50%); cursor:pointer; pointer-events:auto;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .mt-chapter-dot::before{
+    content:''; display:block; width:100%; height:100%; border-radius:50%;
+    background:var(--cosmos); border:1.5px solid rgba(245,243,236,0.28);
     transition:background .45s ease, border-color .45s ease, box-shadow .45s ease, transform .3s ease;
   }
-  .mt-chapter-dot:hover{transform:translate(-50%,-50%) scale(1.25);}
-  .mt-chapter-dot.mt-active{
+  .mt-chapter-dot:hover::before{transform:scale(1.25);}
+  .mt-chapter-dot.mt-active::before{
     background:var(--gold); border-color:var(--gold);
     box-shadow:0 0 9px rgba(212,184,126,0.75);
   }
@@ -613,8 +633,21 @@
   }
   .mt-chapter-dot.mt-active .mt-tip, .mt-chapter-dot:hover .mt-tip{pointer-events:auto;}
   .mt-chapter-dot:hover .mt-tip, .mt-chapter-dot.mt-active .mt-tip{opacity:1 !important; color:var(--gold);}
+
+  /* Compact mobile mode: the rail stays (its jump-to-section function is
+     worth keeping), but sheds anything that would compete with content
+     on a small screen -- no text labels at all, a thinner/shorter track
+     tucked closer to the edge, and a smaller visible dot. The tap target
+     itself is NOT shrunk to match (see .mt-chapter-dot sizing above) so it
+     stays comfortably tappable despite looking small. */
   @media (max-width: 900px){
-    .mt-side-rail{display:none;}
+    .mt-side-rail{ right:10px; top:16vh; height:68vh; }
+    .mt-chapter-dot{ width:26px; height:26px; }
+    .mt-chapter-dot::before{ width:7px; height:7px; }
+    .mt-chapter-dot .mt-tip{ display:none; }
+  }
+  @media (max-width: 480px){
+    .mt-side-rail{ right:7px; }
   }
 
   #mt-overlay section{position:relative; z-index:1; padding:100px 24px; max-width:900px; margin:0 auto;}
@@ -886,7 +919,7 @@
   @media (prefers-reduced-motion: reduce){
     #mt-scroll{scroll-behavior:auto;}
     .mt-scroll-cue span{animation:none;}
-    .mt-pillar-body, .mt-root-body, .mt-chapter-dot, .mt-side-rail .mt-fill{transition:none;}
+    .mt-pillar-body, .mt-root-body, .mt-chapter-dot::before, .mt-side-rail .mt-fill{transition:none;}
   }
 
 </style>
@@ -23312,7 +23345,7 @@
       </g>
       </svg>
     </div>
-<div class="mt-eyebrow">The Living Blueprint&nbsp;·&nbsp;Chapters I – VI</div>
+<div class="mt-eyebrow">The Living Blueprint ·&nbsp;Chapters I – VI</div>
     <h1>The METARA Tree</h1>
     <p class="mt-sub">The growth architecture of METARA – every branch independent, every root shared.</p>
     <div class="mt-coherence-pill">Coherence without uniformity.</div>
@@ -23342,7 +23375,7 @@
   <div class="mt-zone mt-zone-canopy">
   <section data-vine-node id="mt-sunlight">
     <div class="mt-sun-eyebrow">SUNLIGHT</div>
-    <h2 class="mt-section-title">Vision&nbsp;·&nbsp;Inspiration&nbsp;·&nbsp;Purpose</h2>
+    <h2 class="mt-section-title">Vision ·&nbsp;Inspiration ·&nbsp;Purpose</h2>
   </section>
 
   <!-- ============ CANOPY ============ -->
@@ -23361,7 +23394,7 @@
     </div>
 
     <div class="mt-chapter-block" style="margin-top:64px;">
-      <div class="mt-chapter-nav">Branches&nbsp;·&nbsp;CHAPTER V – Outreach</div>
+      <div class="mt-chapter-nav">Branches ·&nbsp;CHAPTER V – Outreach</div>
       <div class="mt-subtitle-blue">Three Pillars, each with its own sub-branches</div>
       <h2 class="mt-section-title" style="margin-top:14px;">Each Independent, All One Root System</h2>
       <div class="mt-leaf-note">Every Leaf is documented in full in Chapter VI – Offerings</div>
@@ -23372,7 +23405,7 @@
       <div class="mt-pillar-card" style="--branch-color:var(--econ);" data-pillar>
         <button class="mt-pillar-head" data-toggle aria-expanded="false">
           <div class="mt-pillar-head-text">
-            <div class="mt-eyebrow" style="color:var(--econ);">BRANCH 1&nbsp;·&nbsp;ECONOMIC STABILITY</div>
+            <div class="mt-eyebrow" style="color:var(--econ);">BRANCH 1 ·&nbsp;ECONOMIC STABILITY</div>
             <h3 style="color:var(--econ);">Collaborations</h3>
             <p class="mt-desc">The financial hub – local businesses circulating value inside one ecosystem.</p>
           </div>
@@ -23397,7 +23430,7 @@
       <div class="mt-pillar-card" style="--branch-color:var(--social);" data-pillar>
         <button class="mt-pillar-head" data-toggle aria-expanded="false">
           <div class="mt-pillar-head-text">
-            <div class="mt-eyebrow" style="color:var(--social);">BRANCH 2&nbsp;·&nbsp;Social Benefit &amp; Human Wellbeing</div>
+            <div class="mt-eyebrow" style="color:var(--social);">BRANCH 2 ·&nbsp;Social Benefit &amp; Human Wellbeing</div>
             <h3 style="color:var(--social);">Sanctuaries</h3>
             <p class="mt-desc">Community-led spaces that hold people through every stage of life.</p>
           </div>
@@ -23434,7 +23467,7 @@
       <div class="mt-pillar-card" style="--branch-color:var(--eco);" data-pillar>
         <button class="mt-pillar-head" data-toggle aria-expanded="false">
           <div class="mt-pillar-head-text">
-            <div class="mt-eyebrow" style="color:var(--eco);">BRANCH 3&nbsp;·&nbsp;Ecological Benefit</div>
+            <div class="mt-eyebrow" style="color:var(--eco);">BRANCH 3 ·&nbsp;Ecological Benefit</div>
             <h3 style="color:var(--eco);">Regenerative Circulations</h3>
             <p class="mt-desc">Closing the loop – waste, tools and skills returned to useful life.</p>
           </div>
@@ -23466,11 +23499,11 @@
 
   <div class="mt-zone mt-zone-trunk">
   <section data-vine-node id="mt-trunk">
-    <div class="mt-chapter-nav">Trunk&nbsp;·&nbsp;CHAPTER III – Stability</div>
+    <div class="mt-chapter-nav">Trunk ·&nbsp;CHAPTER III – Stability</div>
     <div class="mt-pillar-card mt-trunk-panel" style="--branch-color:var(--gold);" data-pillar>
       <button class="mt-pillar-head mt-trunk-head" data-toggle aria-expanded="false">
         <div class="mt-pillar-head-text">
-          <div class="mt-eyebrow" style="color:var(--gold);">Non-Profit Organisation&nbsp;·&nbsp;Individual Members</div>
+          <div class="mt-eyebrow" style="color:var(--gold);">Non-Profit Organisation ·&nbsp;Individual Members</div>
           <h3 class="mt-trunk-title">The METARA Collective</h3>
           <p class="mt-desc mt-trunk-desc">Connects, oversees and governs every branch – the vascular system of the tree.</p>
         </div>
@@ -23526,11 +23559,11 @@
     </div>
 
     <!-- ===== Taproot ===== -->
-    <div class="mt-chapter-nav" style="margin-top:64px;">Taproot&nbsp;·&nbsp;CHAPTER II – Identity</div>
+    <div class="mt-chapter-nav" style="margin-top:64px;">Taproot ·&nbsp;CHAPTER II – Identity</div>
     <div class="mt-root-card" style="--branch-color:var(--gold);" data-pillar>
       <button class="mt-root-head" data-toggle aria-expanded="false">
         <div>
-          <div class="mt-eyebrow" style="color:var(--gold);">Taproot&nbsp;·&nbsp;MEDNA</div>
+          <div class="mt-eyebrow" style="color:var(--gold);">Taproot ·&nbsp;MEDNA</div>
           <p class="mt-desc mt-muted" style="font-style:italic; margin-top:6px;">Deep and stable. Defines who METARA is.</p>
         </div>
         <span class="mt-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
@@ -23543,11 +23576,11 @@
     </div>
 
     <!-- ===== Feeder Roots ===== -->
-    <div class="mt-chapter-nav" style="margin-top:56px;">Feeder Roots&nbsp;·&nbsp;CHAPTER IV – Nourishment</div>
+    <div class="mt-chapter-nav" style="margin-top:56px;">Feeder Roots ·&nbsp;CHAPTER IV – Nourishment</div>
     <div class="mt-root-card" style="--branch-color:var(--charity);" data-pillar>
       <button class="mt-root-head" data-toggle aria-expanded="false">
         <div>
-          <div class="mt-eyebrow" style="color:var(--charity);">Charity&nbsp;·&nbsp;Fundraiser&nbsp;·&nbsp;Sponsors&nbsp;·&nbsp;Grants</div>
+          <div class="mt-eyebrow" style="color:var(--charity);">Charity ·&nbsp;Fundraiser ·&nbsp;Sponsors ·&nbsp;Grants</div>
           <p class="mt-desc mt-muted" style="font-style:italic; margin-top:6px;">Reach outward into surrounding soil.</p>
         </div>
         <span class="mt-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
@@ -23572,7 +23605,7 @@
   <div class="mt-zone mt-zone-soil">
   <section class="mt-soil" data-vine-node id="mt-soil">
     <div class="mt-sun-eyebrow">Soil</div>
-    <h2>Communities&nbsp;·&nbsp;Ecology&nbsp;·&nbsp;Culture&nbsp;·&nbsp;Reality</h2>
+    <h2>Communities ·&nbsp;Ecology ·&nbsp;Culture ·&nbsp;Reality</h2>
     <div class="mt-closing">
       <p>The trunk remains stable. The branches continue expanding. Growth never ends – the tree becomes stronger with every season.</p>
       <p class="mt-final">Eventually, one tree becomes many. A forest emerges.</p>
