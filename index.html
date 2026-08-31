@@ -181,10 +181,15 @@
     text-decoration: none; font-size: 0.8rem;
     letter-spacing: 0.18em; text-transform: uppercase;
     transition: all 0.3s; margin: 0.4rem;
+    background: var(--cosmos);
+    box-shadow: 0 0 24px -6px rgba(212,184,126,0.45);
   }
-  .btn:hover { background: var(--gold); color: var(--deep); }
-  .btn-ghost { border-color: rgba(200,169,110,0.3); color: var(--muted); }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+  .btn:hover { background: var(--gold); color: var(--deep); box-shadow: none; }
+  .btn-ghost {
+    border-color: rgba(200,169,110,0.3); color: var(--muted);
+    box-shadow: 0 0 22px -6px rgba(79,195,247,0.4);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; box-shadow: none; }
 
   /* ── DIVIDER ── */
   .divider {
@@ -232,11 +237,13 @@
     padding: 2.2rem 1.8rem 3rem;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center;
-    transition: background 0.3s, border-color 0.3s;
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 34px -14px rgba(123,111,212,0.35);
   }
   .pillar:hover .pillar-face {
     background: var(--indigo);
     border-color: rgba(212,184,126,0.35);
+    box-shadow: none;
   }
 
   .pillar-num {
@@ -280,6 +287,7 @@
     border-left: 2px solid var(--gold);
     padding: 2rem 2.5rem; margin: 3rem 0;
     background: rgba(200,169,110,0.04);
+    box-shadow: 0 0 30px -14px rgba(212,184,126,0.3);
   }
   .vision-block p {
     font-family: 'Cormorant Garamond', serif;
@@ -387,7 +395,9 @@
     font-family: 'Inter', sans-serif; font-weight: 300;
     font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em;
     color: var(--muted);
-    transition: border-color 0.3s, color 0.3s;
+    transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
+    background: var(--cosmos);
+    box-shadow: 0 0 16px -6px rgba(212,184,126,0.3);
   }
   .value-tag::before {
     content: ''; position: absolute; left: 0.85rem; top: 50%;
@@ -397,7 +407,7 @@
     animation: star-pulse 3.2s ease-in-out infinite;
     animation-delay: var(--pulse-delay, 0s);
   }
-  .value-tag:hover { border-color: var(--gold); color: var(--gold); }
+  .value-tag:hover { border-color: var(--gold); color: var(--gold); box-shadow: none; }
   .value-tag:hover::before { animation-duration: 1s; }
   @keyframes star-pulse {
     0%, 100% { opacity: 0.35; box-shadow: 0 0 3px rgba(212,184,126,0.5); }
@@ -411,6 +421,7 @@
   .contact-box {
     background: var(--cosmos); border: 1px solid var(--border);
     padding: 3.5rem 2.5rem; text-align: center;
+    box-shadow: 0 0 40px -12px rgba(212,184,126,0.25);
   }
   .contact-box h2 {
     font-family: 'Cormorant Garamond', serif;
@@ -22056,16 +22067,20 @@
       font-size: 0.82rem; color: var(--muted);
       cursor: pointer; transition: all 0.25s; border-radius: 2px;
       user-select: none;
+      background: var(--cosmos);
+      box-shadow: 0 0 16px -6px rgba(212,184,126,0.3);
     }
-    .chip:hover { border-color: rgba(200,169,110,0.5); color: var(--text); }
-    .chip.selected { border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.08); }
+    .chip:hover { border-color: rgba(200,169,110,0.5); color: var(--text); box-shadow: none; }
+    .chip.selected { border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.08); box-shadow: none; }
 
     .form-btn {
       padding: 0.85rem 2.2rem; border: 1px solid var(--gold);
-      background: transparent; color: var(--gold); cursor: pointer;
+      background: var(--cosmos); color: var(--gold); cursor: pointer;
       font-family: 'Inter', sans-serif; font-size: 0.8rem;
       letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.3s;
+      box-shadow: 0 0 22px -6px rgba(212,184,126,0.4);
     }
+    .form-btn:hover { box-shadow: none; }
     .form-btn:hover { background: var(--gold); color: var(--deep); }
     .form-btn:disabled { opacity: 0.5; cursor: default; }
     .form-btn-ghost {
