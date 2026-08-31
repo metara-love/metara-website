@@ -165,12 +165,14 @@
   }
   .hero h1 em { font-style: italic; color: var(--gold); }
   .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.15rem; color: var(--text); opacity: 0.9; max-width: 580px;
     margin: 0 auto 1rem; line-height: 1.8;
   }
   .hero-fork { display: block; margin: 0 auto; opacity: 0.9; }
   .hero-cta-row { margin-top: 0.5rem; }
   .hero-testing-note {
+    font-family: 'Cormorant Garamond', serif;
     margin-top: 2.5rem; max-width: 460px;
     font-size: 0.78rem; font-style: italic; color: var(--muted);
     opacity: 0.75; line-height: 1.7;
@@ -184,17 +186,17 @@
     background: var(--cosmos);
     box-shadow: 0 0 24px -6px rgba(212,184,126,0.45);
   }
-  .btn:hover { background: var(--gold); color: var(--deep); box-shadow: none; }
+  .btn:hover { background: transparent; box-shadow: none; transform: scale(0.97); }
   .btn-ghost {
     border-color: rgba(200,169,110,0.3); color: var(--muted);
     box-shadow: 0 0 22px -6px rgba(79,195,247,0.4);
   }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; box-shadow: none; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; box-shadow: none; transform: scale(0.97); }
 
   /* ── DIVIDER ── */
   .divider {
     display: flex; align-items: center; gap: 1rem;
-    max-width: 900px; margin: 0 auto; padding: 0 1.5rem;
+    max-width: 66vw; margin: 0 auto; padding: 0 1.5rem;
     position: relative; z-index: 1;
   }
   .divider::before, .divider::after {
@@ -203,6 +205,17 @@
   .divider span {
     font-size: 0.85rem; letter-spacing: 0.32em; text-transform: uppercase;
     color: var(--gold); white-space: nowrap;
+  }
+  .divider span::before {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
+    box-shadow: 0 0 8px rgba(212,184,126,0.9), 0 0 16px rgba(212,184,126,0.4);
+    transform: translate(-50%,-50%); pointer-events: none; z-index: -1;
+    animation: divider-star-blink 4s ease-in-out infinite;
+  }
+  @keyframes divider-star-blink {
+    0%, 100% { opacity: 0.25; transform: translate(-50%,-50%) scale(0.85); }
+    50% { opacity: 0.85; transform: translate(-50%,-50%) scale(1.15); }
   }
 
   /* ── WHAT WE ARE ── */
@@ -215,7 +228,7 @@
   .what-intro strong { font-weight: 600; color: var(--gold); }
 
   /* ── PILLARS ── */
-  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 4rem; perspective: 1600px; }
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 4rem; perspective: 1600px; }
   @media (max-width: 860px) {
     .pillars { grid-template-columns: 1fr; }
     .pillar { height: 300px; }
@@ -234,11 +247,12 @@
     backface-visibility: hidden;
     background: var(--cosmos);
     border: 1px solid rgba(123,111,212,0.2);
+    border-radius: 16px;
     padding: 2.2rem 1.8rem 3rem;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center;
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 34px -14px rgba(123,111,212,0.35);
+    box-shadow: 0 14px 30px -18px rgba(0,0,0,0.6), 0 0 34px -14px rgba(123,111,212,0.35);
   }
   .pillar:hover .pillar-face {
     background: var(--indigo);
@@ -247,10 +261,9 @@
   }
 
   .pillar-num {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.4rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'Philosopher', serif;
+    font-size: 1.4rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
     color: #ffffff;
-    text-shadow: 0 0 16px rgba(255,255,255,0.7), 0 0 40px rgba(123,111,212,0.6), 0 0 80px rgba(212,184,126,0.2);
     margin-bottom: 1.1rem; display: block;
   }
   .pillar h3 {
@@ -267,10 +280,10 @@
     transform: rotateY(180deg);
     background: var(--indigo);
     border-color: rgba(212,184,126,0.3);
+    border-radius: 16px;
   }
   .pillar-face--back .pillar-num {
     font-size: 1.0rem; margin-bottom: 0.9rem;
-    text-shadow: 0 0 12px rgba(255,255,255,0.5), 0 0 30px rgba(123,111,212,0.5);
   }
   .pillar-face--back p {
     font-size: 0.95rem; color: var(--text); opacity: 0.92; line-height: 1.7; font-style: italic;
@@ -284,10 +297,16 @@
 
   /* ── VISION BLOCK ── */
   .vision-block {
-    border-left: 2px solid var(--gold);
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
     padding: 2rem 2.5rem; margin: 3rem 0;
     background: rgba(200,169,110,0.04);
-    box-shadow: 0 0 30px -14px rgba(212,184,126,0.3);
+    box-shadow: 0 14px 30px -18px rgba(0,0,0,0.6), 0 0 30px -14px rgba(212,184,126,0.3);
+  }
+  .vision-block::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--gold); z-index: 2;
   }
   .vision-block p {
     font-family: 'Cormorant Garamond', serif;
@@ -304,10 +323,23 @@
   /* ── VENTURES ── */
   .ventures { list-style: none; max-width: 600px; margin-left: auto; margin-right: auto; }
   .ventures li {
+    position: relative;
     display: block; text-align: center;
-    padding: 1.6rem 0; border-bottom: 1px solid var(--border);
+    padding: 1.6rem 0;
   }
-  .ventures li:last-child { border-bottom: none; }
+  .ventures li::after {
+    content: ''; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -50%);
+    width: 66%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,243,236,0.16), transparent);
+  }
+  .ventures li::before {
+    content: ''; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -50%);
+    width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
+    box-shadow: 0 0 8px rgba(212,184,126,0.9), 0 0 16px rgba(212,184,126,0.4);
+    pointer-events: none;
+    animation: divider-star-blink 4s ease-in-out infinite;
+  }
+  .ventures li:last-child::after, .ventures li:last-child::before { display: none; }
   .venture-status {
     display: inline-block; font-family: 'Inter', sans-serif;
     font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
@@ -332,7 +364,7 @@
     display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--gold); margin-bottom: 0.7rem; opacity: 0.85;
   }
-  .coop-stage p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .coop-stage p { font-family: 'Cormorant Garamond', serif; font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
   @media (max-width: 700px) {
     .coop-arc { flex-direction: column; align-items: center; gap: 2rem; }
     .coop-stem { height: 50px !important; }
@@ -341,7 +373,7 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.15rem; font-weight: 400; color: var(--text);
   }
-  .ventures p { font-size: 0.9rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .ventures p { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; }
   .venture-logo-wrap {
     width: 130px; height: 130px; margin: 0 auto 0.8rem;
     border-radius: 50%;
@@ -370,7 +402,7 @@
     font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--text); margin-bottom: 0.4rem;
   }
-  .cycle-step p { font-size: 0.82rem; color: var(--muted); }
+  .cycle-step p { font-family: 'Cormorant Garamond', serif; font-size: 0.82rem; color: var(--muted); }
 
   /* ── SECTION HEADERS ── */
   .section-label {
@@ -382,7 +414,7 @@
     font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 300; color: var(--text); margin-bottom: 1.5rem;
   }
-  .section-body { color: var(--text); opacity: 0.85; font-size: 1.02rem; max-width: 640px; line-height: 1.8; }
+  .section-body { font-family: 'Cormorant Garamond', serif; color: var(--text); opacity: 0.85; font-size: 1.02rem; max-width: 640px; line-height: 1.8; }
 
   /* ── VALUES ── */
   .values-grid {
@@ -428,7 +460,7 @@
     font-size: clamp(1.6rem, 3.5vw, 2.6rem);
     font-weight: 300; margin-bottom: 1rem; color: var(--text);
   }
-  .contact-box p { color: var(--muted); margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; margin-bottom: 2rem; }
+  .contact-box p { font-family: 'Cormorant Garamond', serif; color: var(--muted); margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; margin-bottom: 2rem; }
   .contact-detail {
     font-size: 0.85rem; color: var(--muted); margin-top: 2rem;
   }
@@ -487,6 +519,8 @@
   @media (prefers-reduced-motion: reduce) {
     .hero-logo { animation: none; }
     .pillar-inner { transition: none; }
+    .divider span::before { animation: none; opacity: 0.6; }
+    .ventures li::before { animation: none; opacity: 0.6; }
   }
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -596,8 +630,19 @@
     background:radial-gradient(ellipse 820px 420px at 50% 100%, rgba(138,154,122,0.09), transparent 65%);
   }
   .mt-zone-divider{
-    width:70px; height:1px; margin:0 auto; position:relative; z-index:1;
+    width:66vw; max-width:700px; height:1px; margin:0 auto; position:relative; z-index:1;
     background:linear-gradient(90deg, transparent, rgba(245,243,236,0.16), transparent);
+  }
+  .mt-zone-divider::before{
+    content:''; position:absolute; left:50%; top:50%;
+    width:4px; height:4px; border-radius:50%; background:var(--gold);
+    box-shadow:0 0 8px rgba(212,184,126,0.9), 0 0 16px rgba(212,184,126,0.4);
+    transform:translate(-50%,-50%); pointer-events:none;
+    animation:divider-star-blink 4s ease-in-out infinite;
+  }
+  @keyframes divider-star-blink{
+    0%,100%{opacity:0.25; transform:translate(-50%,-50%) scale(0.85);}
+    50%{opacity:0.85; transform:translate(-50%,-50%) scale(1.15);}
   }
 
   /* ---------- side chapter-rail: fixed guide + subtle continuous growth line ---------- */
@@ -681,7 +726,7 @@
   }
   .mt-coherence-pill{
     display:inline-block; margin-top:38px; padding:14px 30px;
-    border:1px dashed var(--gold); border-radius:999px;
+    border:1px dashed var(--gold); border-radius:0;
     font-family:'Philosopher', serif; font-size:1.2rem; color:var(--text);
   }
   .mt-scroll-cue{margin-top:26px; font-family:'Inter',sans-serif; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); opacity:0.6;}
@@ -723,7 +768,7 @@
   .mt-chip-row.mt-row2{margin-top:14px;}
   .mt-chip{
     font-family:'Inter',sans-serif; font-size:0.92rem; color:var(--text);
-    background:var(--indigo); border:1px solid var(--muted); border-radius:24px;
+    background:var(--indigo); border:1px solid var(--muted); border-radius:0;
     padding:10px 22px; cursor:default;
     transition:transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
   }
@@ -931,6 +976,7 @@
     #mt-scroll{scroll-behavior:auto;}
     .mt-scroll-cue span{animation:none;}
     .mt-pillar-body, .mt-root-body, .mt-chapter-dot::before, .mt-side-rail .mt-fill{transition:none;}
+    .mt-zone-divider::before{animation:none; opacity:0.6;}
   }
 
 </style>
@@ -21984,15 +22030,14 @@
       <div id="mf-success" style="display:none;text-align:center;padding:4rem 2rem;">
         <div style="font-size:2.5rem;margin-bottom:1.5rem;">✦</div>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--text);margin-bottom:1rem;">Thank you, <span id="mf-success-name"></span>.</h3>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 2rem;line-height:1.8;">Your message has been received. We read every response personally and will be in touch at <span id="mf-success-email" style="color:var(--gold);"></span>.</p>
-        <p style="color:var(--muted);font-size:0.85rem;font-style:italic;">In the meantime — you are already part of something that is growing.</p>
+        <p style="font-family:'Cormorant Garamond',serif;color:var(--muted);max-width:480px;margin:0 auto 2rem;line-height:1.8;">Your message has been received. We read every response personally and will be in touch at <span id="mf-success-email" style="color:var(--gold);"></span>.</p>
+        <p style="font-family:'Cormorant Garamond',serif;color:var(--muted);font-size:0.85rem;font-style:italic;">In the meantime — you are already part of something that is growing.</p>
       </div>
 
       <!-- ERROR STATE -->
       <div id="mf-error" style="display:none;text-align:center;padding:2.5rem 2rem;border:1px solid rgba(192,57,43,0.4);background:rgba(192,57,43,0.06);">
-        <p id="mf-error-headline" style="color:#e08a82;font-size:0.95rem;margin-bottom:0.6rem;font-weight:500;">Something went wrong sending your message.</p>
-        <p id="mf-error-explain" style="color:var(--muted);font-size:0.85rem;line-height:1.6;margin-bottom:1.2rem;max-width:440px;margin-left:auto;margin-right:auto;">Please try again, or write to us directly.</p>
-        <a href="mailto:love@metara.co.za" style="color:var(--gold);text-decoration:none;">love@metara.co.za</a>
+        <p id="mf-error-headline" style="font-family:'Cormorant Garamond',serif;color:#e08a82;font-size:0.95rem;margin-bottom:0.6rem;font-weight:500;">Something went wrong sending your message.</p>
+        <p id="mf-error-explain" style="font-family:'Cormorant Garamond',serif;color:var(--muted);font-size:0.85rem;line-height:1.6;margin-bottom:1.2rem;max-width:440px;margin-left:auto;margin-right:auto;">Please wait a moment and try submitting again.</p>
 
         <div style="margin-top:1.4rem;">
           <button type="button" onclick="mfToggleErrorDetails()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;letter-spacing:0.08em;text-decoration:underline;cursor:pointer;opacity:0.7;">
@@ -22009,9 +22054,7 @@
     </div><!-- /mf-wrap -->
 
     <div style="text-align:center;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);">
-      <p style="color:var(--muted);font-size:0.82rem;">Prefer to write directly?</p>
-      <a href="mailto:love@metara.co.za" style="color:var(--gold);font-size:0.88rem;text-decoration:none;letter-spacing:0.08em;">love@metara.co.za</a>
-      <p style="color:var(--muted);font-size:0.78rem;margin-top:0.3rem;">Plettenberg Bay · Western Cape · South Africa</p>
+      <p style="color:var(--muted);font-size:0.78rem;">Plettenberg Bay · Western Cape · South Africa</p>
     </div>
 
   </section>
@@ -22026,16 +22069,21 @@
       font-size: 1.7rem; font-weight: 300; color: var(--text);
       margin-bottom: 0.4rem; text-align: center;
     }
-    .step-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; text-align: center; }
+    .step-sub { font-family: 'Cormorant Garamond', serif; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; text-align: center; }
 
     /* intent grid */
-    .intent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); }
-    .intent-card { background:var(--cosmos); padding:1.6rem 1.2rem; cursor:pointer; transition:background 0.25s; }
-    .intent-card:hover { background:var(--indigo); }
+    .intent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .intent-card {
+      background:var(--cosmos); padding:1.6rem 1.2rem; cursor:pointer;
+      border:1px solid rgba(123,111,212,0.2); border-radius:16px;
+      box-shadow:0 14px 30px -18px rgba(0,0,0,0.6), 0 0 34px -14px rgba(123,111,212,0.35);
+      transition:background 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .intent-card:hover { background:transparent; box-shadow:none; transform:scale(0.97); }
     .intent-card--wide { grid-column: span 3; display:flex; align-items:center; justify-content:center; padding:1.2rem 1.6rem; }
     .intent-icon { font-size:1.3rem; color:var(--gold); margin-bottom:0.6rem; }
     .intent-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:400; color:var(--text); margin-bottom:0.4rem; }
-    .intent-desc { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+    .intent-desc { font-family: 'Cormorant Garamond', serif; font-size:0.8rem; color:var(--muted); line-height:1.5; }
     @media (max-width: 640px) { .intent-grid { grid-template-columns: 1fr 1fr; } .intent-card--wide { grid-column: span 2; } }
 
     /* form step */
@@ -22704,6 +22752,9 @@
   }
 })();
 </script>
+
+
+
 
 
 <!--
