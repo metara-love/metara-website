@@ -393,13 +393,6 @@
     font-size: 1.15rem; font-weight: 400; color: var(--text);
   }
   .ventures p { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.6; max-width: 480px; margin-left: auto; margin-right: auto; }
-  .venture-logo-wrap {
-    width: 130px; height: 130px; margin: 0 auto 0.8rem;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.86) 52%, rgba(255,255,255,0.31) 68%, rgba(255,255,255,0) 80%);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .venture-logo { display: block; height: 84px; width: auto; margin: 0; }
   .venture-logo-inline-wrap { width: 140px; height: 140px; margin: 0 auto 0.8rem; }
   .venture-logo-inline-wrap svg { width: 100%; height: 100%; display: block; }
 
@@ -467,23 +460,6 @@
   @media (prefers-reduced-motion: reduce) {
     .value-tag::before { animation: none; opacity: 0.7; }
   }
-
-  /* ── CONTACT ── */
-  .contact-box {
-    background: var(--cosmos); border: 1px solid var(--border);
-    padding: 3.5rem 2.5rem; text-align: center;
-    box-shadow: 0 0 40px -12px rgba(212,184,126,0.25);
-  }
-  .contact-box h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-    font-weight: 300; margin-bottom: 1rem; color: var(--text);
-  }
-  .contact-box p { font-family: 'Cormorant Garamond', serif; color: var(--muted); margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; margin-bottom: 2rem; }
-  .contact-detail {
-    font-size: 0.85rem; color: var(--muted); margin-top: 2rem;
-  }
-  .contact-detail a { color: var(--gold); text-decoration: none; }
 
   /* ── FOOTER ── */
   footer {
@@ -690,7 +666,7 @@
   #mt-overlay, #mt-overlay *{box-sizing:border-box;}
   #mt-scroll{scroll-behavior:smooth; overflow-x:hidden;}
   
-  #mt-overlay h1, #mt-overlay h2, #mt-overlay h3, #mt-overlay .mt-display{font-family:'Philosopher', serif; font-weight:400; margin:0;}
+  h1,h2,h3{font-family:'Philosopher', serif; font-weight:400; margin:0;}
   .mt-eyebrow{
     font-family:'Inter', sans-serif;
     font-size:0.72rem;
@@ -1031,8 +1007,6 @@
   }
 
   /* ---------- growth ring / root chips ---------- */
-  .mt-ring-chip-grid{display:flex; flex-direction:column; align-items:center; gap:14px; margin-top:40px;}
-
   /* ---------- taproot / feeder roots cards ---------- */
   .mt-root-card{
     position:relative;
