@@ -595,3 +595,14 @@
     document.fonts.ready.then(updateNavOffset);
   }
 })();
+
+// Some browsers fail to paint the page on initial load when it contains
+// many perspective/backface-visibility 3D-transform elements (our flip
+// cards), leaving a blank viewport until the user scrolls. Nudging the
+// scroll position by 1px forces a repaint without any visible jump.
+window.addEventListener('load', function() {
+  requestAnimationFrame(function() {
+    window.scrollBy(0, 1);
+    window.scrollBy(0, -1);
+  });
+});
