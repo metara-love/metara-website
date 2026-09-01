@@ -248,14 +248,14 @@
     background: var(--cosmos);
     border: 1px solid rgba(123,111,212,0.2);
     border-radius: 16px;
-    padding: 2.2rem 1.8rem 3rem;
+    padding: 2.2rem 1.8rem 3.6rem;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center;
     transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 14px 30px -18px rgba(0,0,0,0.6), 0 0 34px -14px rgba(123,111,212,0.35);
   }
   .pillar:hover .pillar-face {
-    background: var(--indigo);
+    background: transparent;
     border-color: rgba(212,184,126,0.35);
     box-shadow: none;
   }
@@ -278,7 +278,7 @@
 
   .pillar-face--back {
     transform: rotateY(180deg);
-    background: var(--indigo);
+    background: var(--cosmos);
     border-color: rgba(212,184,126,0.3);
     border-radius: 16px;
   }
@@ -294,6 +294,14 @@
     font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--gold); opacity: 0.6;
   }
+
+  /* Venture cards: transparent front, filled back, fill never changes on hover/flip */
+  .venture-card .pillar-face { background: transparent; border-color: transparent; }
+  .venture-card .pillar-face--back { background: var(--cosmos); }
+  .venture-card:hover .pillar-face,
+  .venture-card.flipped .pillar-face { background: transparent; }
+  .venture-card:hover .pillar-face--back,
+  .venture-card.flipped .pillar-face--back { background: var(--cosmos); }
 
   /* ── VISION BLOCK ── */
   .vision-block {
@@ -322,24 +330,44 @@
 
   /* ── VENTURES ── */
   .ventures { list-style: none; max-width: 600px; margin-left: auto; margin-right: auto; }
-  .ventures li {
+  .ventures.pillars { max-width: none; grid-template-columns: 1fr; }
+  .venture-card { height: 190px; }
+  .venture-card .pillar-face:not(.pillar-face--back) {
+    display: grid; grid-template-columns: 140px 260px; justify-content: center;
+    align-items: center; justify-items: center;
+    gap: 0.75rem; padding: 1.4rem 0.75rem 2.1rem; text-align: center;
+  }
+  .venture-card .venture-logo-inline-wrap { margin: 0; }
+  .venture-card .pillar-face--back { transform: rotateX(180deg); }
+  .venture-card.flipped .pillar-inner { transform: rotateX(180deg); }
+  @media (max-width: 860px) {
+    .venture-card { height: 300px; }
+    .venture-card .pillar-face:not(.pillar-face--back) {
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 0; padding: 2.2rem 1.8rem 3.6rem;
+    }
+    .venture-card .venture-logo-inline-wrap { margin: 0 auto 0.8rem; }
+    .venture-card .pillar-face--back { transform: rotateY(180deg); }
+    .venture-card.flipped .pillar-inner { transform: rotateY(180deg); }
+  }
+  .ventures:not(.pillars) li {
     position: relative;
     display: block; text-align: center;
     padding: 1.6rem 0;
   }
-  .ventures li::after {
+  .ventures:not(.pillars) li::after {
     content: ''; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -50%);
     width: 66%; height: 1px;
     background: linear-gradient(90deg, transparent, rgba(245,243,236,0.16), transparent);
   }
-  .ventures li::before {
+  .ventures:not(.pillars) li::before {
     content: ''; position: absolute; left: 50%; top: 100%; transform: translate(-50%, -50%);
     width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
     box-shadow: 0 0 8px rgba(212,184,126,0.9), 0 0 16px rgba(212,184,126,0.4);
     pointer-events: none;
     animation: divider-star-blink 4s ease-in-out infinite;
   }
-  .ventures li:last-child::after, .ventures li:last-child::before { display: none; }
+  .ventures:not(.pillars) li:last-child::after, .ventures:not(.pillars) li:last-child::before { display: none; }
   .venture-status {
     display: inline-block; font-family: 'Inter', sans-serif;
     font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
@@ -553,7 +581,11 @@
     backdrop-filter:blur(6px);
   }
   .mt-close-btn:hover{background:rgba(35,47,84,0.9); border-color:#d4b87e; transform:rotate(90deg);}
-  @media (max-width:900px){ .mt-close-btn{top:14px; right:14px;} }
+  @media (max-width:900px){
+    .mt-close-btn{top:14px; right:14px;}
+    #mt-scroll{ scrollbar-width:none; -ms-overflow-style:none; }
+    #mt-scroll::-webkit-scrollbar{ display:none; width:0; height:0; }
+  }
 
   #mt-overlay{
     --deep:#11182b;
@@ -698,6 +730,7 @@
      stays comfortably tappable despite looking small. */
   @media (max-width: 900px){
     .mt-side-rail{ right:10px; top:16vh; height:68vh; }
+    .mt-side-rail .mt-fill{ filter:saturate(0.45) brightness(1.25); }
     .mt-chapter-dot{ width:26px; height:26px; }
     .mt-chapter-dot::before{ width:7px; height:7px; }
     .mt-chapter-dot .mt-tip{ display:none; }
@@ -2121,7 +2154,7 @@
     </div>
 
     <div class="pillars">
-      <div class="pillar" onclick="this.classList.toggle('flipped')">
+      <div class="pillar" data-action="pillar-flip">
         <div class="pillar-inner">
           <div class="pillar-face">
             <span class="pillar-num">Purpose</span>
@@ -2137,7 +2170,7 @@
         </div>
       </div>
 
-      <div class="pillar" onclick="this.classList.toggle('flipped')">
+      <div class="pillar" data-action="pillar-flip">
         <div class="pillar-inner">
           <div class="pillar-face">
             <span class="pillar-num">Mission</span>
@@ -2153,7 +2186,7 @@
         </div>
       </div>
 
-      <div class="pillar" onclick="this.classList.toggle('flipped')">
+      <div class="pillar" data-action="pillar-flip">
         <div class="pillar-inner">
           <div class="pillar-face">
             <span class="pillar-num">Approach</span>
@@ -2195,9 +2228,11 @@
     <h2 class="section-title">A living system of enterprises</h2>
     <p class="section-body">Like a tree that remains the same organism while continuously producing new branches, METARA expands while remaining rooted in its original DNA. Some branches are already bearing fruit. Others are still seeds — waiting in the seedbank for fertile ground to germinate.</p>
 
-    <ul class="ventures" style="margin-top: 2.5rem;">
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Living Solutions logo"><svg
+    <ul class="ventures pillars" style="margin-top: 2.5rem;">
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Living Solutions logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -4365,12 +4400,23 @@
     </g>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--active">Growing</span>
-        <h4>METARA Living Solutions</h4>
-        <p>The commercial engine — financially sustainable businesses that solve real-world problems while generating the resources that power the wider ecosystem.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--active">Growing</span>
+              <h3>METARA Living Solutions</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Living Solutions</h3>
+            <p>The commercial engine — financially sustainable businesses that solve real-world problems while generating the resources that power the wider ecosystem.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Collaboration &amp; Eco Solutions logo"><svg
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Collaboration &amp; Eco Solutions logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -7505,12 +7551,23 @@
          y="329.51999">METARA</tspan></text>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--active">Growing — Pilot Phase</span>
-        <h4>METARA Collaboration &amp; Eco Solutions</h4>
-        <p>A local circular economy platform connecting independent businesses in Plettenberg Bay into a mutually beneficial network — turning waste into resource, reducing costs, and building community.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--active">Growing — Pilot Phase</span>
+              <h3>METARA Collaboration &amp; Eco Solutions</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Collaboration &amp; Eco Solutions</h3>
+            <p>A local circular economy platform connecting independent businesses in Plettenberg Bay into a mutually beneficial network — turning waste into resource, reducing costs, and building community.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Holistic Retreat Centre logo"><svg
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Holistic Retreat Centre logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -10508,12 +10565,23 @@
     </g>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--seed">Seed · Awaiting Fertile Ground</span>
-        <h4>METARA Holistic Retreat Centre</h4>
-        <p>A sanctuary for deep rest, healing and purpose — a self-sufficient community model rooted in regenerative abundance, nature connection, and holistic wellbeing.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--seed">Seed · Awaiting Fertile Ground</span>
+              <h3>METARA Holistic Retreat Centre</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Holistic Retreat Centre</h3>
+            <p>A sanctuary for deep rest, healing and purpose — a self-sufficient community model rooted in regenerative abundance, nature connection, and holistic wellbeing.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Collective NPO logo"><svg
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Collective NPO logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -13333,12 +13401,23 @@
     </g>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--seed">Seed · Awaiting Fertile Ground</span>
-        <h4>METARA Collective NPO</h4>
-        <p>The social layer — supporting education, ecological restoration, community projects, and care initiatives. The foundation that ensures value reaches communities and nature.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--seed">Seed · Awaiting Fertile Ground</span>
+              <h3>METARA Collective NPO</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Collective NPO</h3>
+            <p>The social layer — supporting education, ecological restoration, community projects, and care initiatives. The foundation that ensures value reaches communities and nature.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Unconditional Love School logo"><svg
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Unconditional Love School logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -16452,12 +16531,23 @@
     </g>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--active">Growing</span>
-        <h4>METARA Unconditional Love School</h4>
-        <p>Education rooted in the deepest principles of human connection, cooperation, and conscious living. Established 2021.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--active">Growing</span>
+              <h3>METARA Unconditional Love School</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Unconditional Love School</h3>
+            <p>Education rooted in the deepest principles of human connection, cooperation, and conscious living. Established 2021.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Charity logo"><svg
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Charity logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -18855,12 +18945,23 @@
     </g>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--seed">Seed &middot; Awaiting Fertile Ground</span>
-        <h4>METARA Charity</h4>
-        <p>A charity foundation that raises and distributes funds across METARA's branches; legally distinct from the Collective NPO.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--seed">Seed &middot; Awaiting Fertile Ground</span>
+              <h3>METARA Charity</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Charity</h3>
+            <p>A charity foundation that raises and distributes funds across METARA's branches; legally distinct from the Collective NPO.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
-      <li>
-        <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Sacred Birthing Centre logo"><svg
+      <li class="pillar venture-card" data-action="pillar-flip">
+        <div class="pillar-inner">
+          <div class="pillar-face">
+            <div class="venture-logo-inline-wrap" role="img" aria-label="METARA Sacred Birthing Centre logo"><svg
    width="600"
    height="600"
    viewBox="0 0 600 600"
@@ -21858,9 +21959,18 @@
     </g>
   </g>
 </svg></div>
-        <span class="venture-status venture-status--seed">Seed &middot; Awaiting Fertile Ground</span>
-        <h4>METARA Sacred Birthing Centre</h4>
-        <p>This branch sits closely alongside the Holistic Retreat Centre, focused on holistic and natural births and the infrastructure required to support them. Content to follow as the venture is developed.</p>
+            <div class="venture-content">
+              <span class="venture-status venture-status--seed">Seed &middot; Awaiting Fertile Ground</span>
+              <h3>METARA Sacred Birthing Centre</h3>
+            </div>
+            <span class="pillar-flip-hint">Tap to explore</span>
+          </div>
+          <div class="pillar-face pillar-face--back">
+            <h3>METARA Sacred Birthing Centre</h3>
+            <p>This branch sits closely alongside the Holistic Retreat Centre, focused on holistic and natural births and the infrastructure required to support them. Content to follow as the venture is developed.</p>
+            <span class="pillar-flip-hint">Tap to return</span>
+          </div>
+        </div>
       </li>
     </ul>
 
@@ -21912,7 +22022,7 @@
       This roadmap, and the incubation arrangement itself, will have its own dedicated page as the Cooperative takes shape.
     </p>
     <div style="text-align:center; margin-top:1.5rem;">
-      <a class="btn" href="#connect" onclick="mfJumpToCooperative()">Become a member of the Cooperative</a>
+      <a class="btn" href="#connect" data-action="jump-cooperative">Become a member of the Cooperative</a>
     </div>
   </section>
 
@@ -21971,7 +22081,7 @@
       <div id="mf-progress" style="margin-bottom:2rem; display:none;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
           <span id="mf-progress-label" style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);"></span>
-          <button type="button" id="mf-start-over" onclick="mfReset()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;letter-spacing:0.08em;text-decoration:underline;">Start over</button>
+          <button type="button" id="mf-start-over" data-action="reset-form" style="background:none;border:none;color:var(--muted);font-size:0.72rem;cursor:pointer;letter-spacing:0.08em;text-decoration:underline;">Start over</button>
         </div>
         <div style="height:2px;background:rgba(200,169,110,0.15);border-radius:2px;overflow:hidden;">
           <div id="mf-progress-bar" style="height:100%;background:var(--gold);width:0%;transition:width 0.5s ease;"></div>
@@ -21984,37 +22094,37 @@
         <div class="step-sub">Choose the option closest to your reason for reaching out — we'll tailor the next few questions accordingly.</div>
 
         <div class="intent-grid">
-          <div class="intent-card" data-intent="onboarding" onclick="mfSelectIntent('onboarding')">
+          <div class="intent-card" data-intent="onboarding" data-action="select-intent">
             <div class="intent-icon">✦</div>
             <div class="intent-name">Onboarding</div>
             <div class="intent-desc">I want to join the METARA ecosystem — as a collaborator, business, member or resident.</div>
           </div>
-          <div class="intent-card" data-intent="partnership" onclick="mfSelectIntent('partnership')">
+          <div class="intent-card" data-intent="partnership" data-action="select-intent">
             <div class="intent-icon">◈</div>
             <div class="intent-name">Partnership</div>
             <div class="intent-desc">My organisation wants to explore collaboration, research, or a project together.</div>
           </div>
-          <div class="intent-card" data-intent="investment" onclick="mfSelectIntent('investment')">
+          <div class="intent-card" data-intent="investment" data-action="select-intent">
             <div class="intent-icon">◎</div>
             <div class="intent-name">Investment &amp; Funding</div>
             <div class="intent-desc">I'm interested in funding, grants, or investing in METARA's vision.</div>
           </div>
-          <div class="intent-card" data-intent="quotation" onclick="mfSelectIntent('quotation')">
+          <div class="intent-card" data-intent="quotation" data-action="select-intent">
             <div class="intent-icon">⬡</div>
             <div class="intent-name">Quotation</div>
             <div class="intent-desc">I'd like a proposal for consulting, implementation or facilitation services.</div>
           </div>
-          <div class="intent-card" data-intent="request" onclick="mfSelectIntent('request')">
+          <div class="intent-card" data-intent="request" data-action="select-intent">
             <div class="intent-icon">◇</div>
             <div class="intent-name">Request</div>
             <div class="intent-desc">I need specific information, a resource, or have a media enquiry.</div>
           </div>
-          <div class="intent-card" data-intent="feedback" onclick="mfSelectIntent('feedback')">
+          <div class="intent-card" data-intent="feedback" data-action="select-intent">
             <div class="intent-icon">♡</div>
             <div class="intent-name">Feedback</div>
             <div class="intent-desc">I have a compliment, concern, or suggestion to share.</div>
           </div>
-          <div class="intent-card intent-card--wide" data-intent="other" onclick="mfSelectIntent('other')">
+          <div class="intent-card intent-card--wide" data-intent="other" data-action="select-intent">
             <div>
               <div class="intent-name" style="margin-bottom:0.2rem;">Something else</div>
               <div class="intent-desc">Not quite any of the above — just let us know what's on your mind.</div>
@@ -22040,22 +22150,18 @@
         <p id="mf-error-explain" style="font-family:'Cormorant Garamond',serif;color:var(--muted);font-size:0.85rem;line-height:1.6;margin-bottom:1.2rem;max-width:440px;margin-left:auto;margin-right:auto;">Please wait a moment and try submitting again.</p>
 
         <div style="margin-top:1.4rem;">
-          <button type="button" onclick="mfToggleErrorDetails()" style="background:none;border:none;color:var(--muted);font-size:0.72rem;letter-spacing:0.08em;text-decoration:underline;cursor:pointer;opacity:0.7;">
+          <button type="button" data-action="toggle-error-details" style="background:none;border:none;color:var(--muted);font-size:0.72rem;letter-spacing:0.08em;text-decoration:underline;cursor:pointer;opacity:0.7;">
             <span id="mf-error-details-label">Show technical details</span>
           </button>
         </div>
         <div id="mf-error-details" style="display:none;margin-top:1rem;text-align:left;background:var(--deep);border:1px solid var(--border);padding:1rem 1.2rem;font-family:'Courier New',monospace;font-size:0.72rem;color:var(--muted);line-height:1.6;max-width:480px;margin-left:auto;margin-right:auto;word-break:break-word;white-space:pre-wrap;"></div>
 
         <div style="margin-top:1.4rem;">
-          <button type="button" class="form-btn-ghost" onclick="document.getElementById('mf-error').style.display='none';document.getElementById('mf-steps').style.display='block';">← Back to form</button>
+          <button type="button" class="form-btn-ghost" data-action="error-back-to-form">← Back to form</button>
         </div>
       </div>
 
     </div><!-- /mf-wrap -->
-
-    <div style="text-align:center;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--border);">
-      <p style="color:var(--muted);font-size:0.78rem;">Plettenberg Bay · Western Cape · South Africa</p>
-    </div>
 
   </section>
 
@@ -22072,7 +22178,7 @@
     .step-sub { font-family: 'Cormorant Garamond', serif; color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; text-align: center; }
 
     /* intent grid */
-    .intent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .intent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; }
     .intent-card {
       background:var(--cosmos); padding:1.6rem 1.2rem; cursor:pointer;
       border:1px solid rgba(123,111,212,0.2); border-radius:16px;
@@ -22307,6 +22413,27 @@
     }
     const mfData = {};
 
+    // ── Delegated click handling (replaces inline onclick="" attributes,
+    // which the site's script-src CSP silently blocks in production even
+    // though they work fine when opened locally) ──
+    document.addEventListener('click', function(e) {
+      const el = e.target.closest('[data-action]');
+      if (!el) return;
+      const action = el.dataset.action;
+      if (action === 'pillar-flip') el.classList.toggle('flipped');
+      else if (action === 'jump-cooperative') mfJumpToCooperative();
+      else if (action === 'reset-form') mfReset();
+      else if (action === 'select-intent') mfSelectIntent(el.dataset.intent);
+      else if (action === 'toggle-error-details') mfToggleErrorDetails();
+      else if (action === 'error-back-to-form') {
+        document.getElementById('mf-error').style.display = 'none';
+        document.getElementById('mf-steps').style.display = 'block';
+      }
+      else if (action === 'next-step') mfNext(parseInt(el.dataset.step, 10));
+      else if (action === 'show-step') mfShowStep(parseInt(el.dataset.step, 10));
+      else if (action === 'submit-form') mfSubmit();
+    });
+
     // ── INTENT SELECTION ──
     window.mfSelectIntent = function(intent) {
       document.querySelectorAll('.intent-card').forEach(c => c.classList.remove('selected'));
@@ -22366,8 +22493,8 @@
           </div>
         </div>
         <div style="display:flex;gap:1rem;margin-top:2rem;justify-content:center;">
-          <button type="button" class="form-btn-ghost" onclick="mfReset()">← Change intention</button>
-          <button type="button" class="form-btn" onclick="mfNext(1)">Continue →</button>
+          <button type="button" class="form-btn-ghost" data-action="reset-form">← Change intention</button>
+          <button type="button" class="form-btn" data-action="next-step" data-step="1">Continue →</button>
         </div>
       `;
       stepsEl.appendChild(step1);
@@ -22398,8 +22525,8 @@
           <div id="mf-turnstile-container"></div>
         </div>
         <div style="display:flex;gap:1rem;margin-top:1.5rem;justify-content:center;">
-          <button type="button" class="form-btn-ghost" onclick="mfShowStep(1)">← Back</button>
-          <button type="button" class="form-btn" id="mf-submit-btn" onclick="mfSubmit()" disabled>Send with love ♡</button>
+          <button type="button" class="form-btn-ghost" data-action="show-step" data-step="1">← Back</button>
+          <button type="button" class="form-btn" id="mf-submit-btn" data-action="submit-form" disabled>Send with love ♡</button>
         </div>
       `;
       step2.innerHTML = fieldsHtml;
@@ -22752,6 +22879,7 @@
   }
 })();
 </script>
+
 
 
 

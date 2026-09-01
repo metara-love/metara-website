@@ -265,7 +265,11 @@ OVERLAY_STRUCTURAL_CSS = '''
     backdrop-filter:blur(6px);
   }
   .mt-close-btn:hover{background:rgba(35,47,84,0.9); border-color:#d4b87e; transform:rotate(90deg);}
-  @media (max-width:900px){ .mt-close-btn{top:14px; right:14px;} }
+  @media (max-width:900px){
+    .mt-close-btn{top:14px; right:14px;}
+    #mt-scroll{ scrollbar-width:none; -ms-overflow-style:none; }
+    #mt-scroll::-webkit-scrollbar{ display:none; width:0; height:0; }
+  }
 '''
 
 OVERLAY_OPEN_CLOSE_JS_BODY = '''
