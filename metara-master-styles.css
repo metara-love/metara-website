@@ -183,6 +183,15 @@
     box-shadow: 0 0 22px -6px rgba(79,195,247,0.4);
   }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: transparent; box-shadow: none; transform: scale(0.97); }
+  .btn-subtle {
+    padding: 0.45rem 1rem; font-size: 0.68rem; letter-spacing: 0.14em;
+    border-color: rgba(200,169,110,0.18); color: var(--muted);
+    background: transparent; box-shadow: none; opacity: 0.65;
+    display: flex; align-items: center; gap: 0.4rem; width: fit-content;
+    margin: 0.8rem auto 0;
+  }
+  .btn-subtle svg { width: 0.85em; height: 0.85em; fill: currentColor; flex-shrink: 0; }
+  .btn-subtle:hover { border-color: var(--gold); color: var(--gold); opacity: 1; background: transparent; box-shadow: none; transform: scale(0.97); }
 
   /* ── DIVIDER ── */
   .divider {
